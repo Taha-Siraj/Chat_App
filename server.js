@@ -5,14 +5,18 @@ import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import mongoose from 'mongoose';
 import path from 'path';
+import cookieParser from 'cookie-parser';
 import  {userModel}  from './Model/model.js';
 
 const app = express();
-app.use(express.json())
 app.use(cors({
   origin: true,
   credentials: true
 }));
+
+app.use(cookieParser())
+app.use(express.json())
+
 
 const SECRET = process.env.SECRET_KEY
 
@@ -101,8 +105,10 @@ app.post('/api/v1/logout', (req , res) => {
 });
 
 //MiddleWare
+
 app.use('/api/v1/*splat', (req, res, next) => {
-  const {token} = req?.body;
+  const token = req.cookies.token;
+  console.log(token)
   if(!token){
    return res.status(401).send({message: "Unauthorized"})
   }
