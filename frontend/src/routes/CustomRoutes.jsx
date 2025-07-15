@@ -5,6 +5,7 @@ import Login from '../Auth/Login';
 import Signup from '../Auth/Signup';
 import Chatuser from '../pages/Chatuser';
 import Header from '../pages/Header';
+import Alluser from '../pages/Alluser';
 
 const CustomRoutes = () => {
 
@@ -16,7 +17,8 @@ const CustomRoutes = () => {
         <Route path='/' element={<Home/>} /> 
         <Route path='/login' element={<Login/>} /> 
         <Route path='/signup' element={<Signup/>} /> 
-        <Route path='/chat' element={<Chatuser/>} /> 
+        <Route path='/chat/:id' element={<Chatuser/>} /> 
+        <Route path='/alluser' element={<Alluser/>}/> 
       </Routes>
     </div>
   )

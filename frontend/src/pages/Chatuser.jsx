@@ -1,10 +1,13 @@
 import React from 'react'
 import Alluser from './Alluser'
+import { useParams } from 'react-router-dom'
 
 const chat = () => {
+
+  const id = useParams()
+  console.log(id)
   return (
     <div className='py-20'>
-        <Alluser/>
       <h1>Chat</h1>
     </div>
   )
