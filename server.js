@@ -7,6 +7,7 @@ import mongoose from 'mongoose';
 import path from 'path';
 import cookieParser from 'cookie-parser';
 import  {userModel}  from './Model/model.js';
+import { msgModel } from './Model/model.js';
 
 const app = express();
 app.use(cors({
@@ -14,13 +15,9 @@ app.use(cors({
   credentials: true
 }));
 
-app.use(cookieParser())
-app.use(express.json())
-
-
-const SECRET = process.env.SECRET_KEY
-
-
+app.use(cookieParser());
+app.use(express.json());
+const SECRET = process.env.SECRET_KEY;
 mongoose.connect(process.env.MONGO_DB).then(() => {console.log("DB is connencted")});
 
 //signup API
@@ -105,7 +102,6 @@ app.post('/api/v1/logout', (req , res) => {
 });
 
 //MiddleWare
-
 app.use('/api/v1/*splat', (req, res, next) => {
   const token = req.cookies.token;
   console.log(token)
@@ -132,7 +128,7 @@ app.use('/api/v1/*splat', (req, res, next) => {
       res.status(401).send({message: "invalid token"})
     }
   })
-})
+});
 
 //User reload API
 app.get('/api/v1/userprofile', async (req, res) => {
@@ -150,7 +146,7 @@ app.get('/api/v1/userprofile', async (req, res) => {
      console.log(error)
      res.status(500).send({msg: "internel Server error"})
   }
-})
+});
 
 // All user API
 app.get('/api/v1/allusers', async (req, res) => {
@@ -160,6 +156,23 @@ app.get('/api/v1/allusers', async (req, res) => {
   } catch (error) {
     res.status(500).send({msg: "internel server error"})
     console.log(error);
+  }
+});
+
+app.post('/api/v1/chat/:id', async(req, res) => {
+  const senderId = req.params.id;
+  const reciverId = req.body.token.user_id
+  try {
+    let result = await msgModel.create({
+      from: senderId,
+      to: reciverId,
+      text: req.body.message
+    })
+    res.status(201).send({message: "sent msg"})
+  } catch (error) {
+    console.log(error)
+    res.status(500).send({message: "internel server error"})
+    
   }
 })
 

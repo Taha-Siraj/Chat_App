@@ -10,3 +10,13 @@ const userSchema = new mongoose.Schema({
 })
 
 export const userModel = mongoose.model('ChatUser', userSchema) 
+
+const msgSchema = new mongoose.Schema({
+    from: {type: mongoose.ObjectId, ref: 'users', required: true},
+    to: {type: mongoose.ObjectId, ref: 'users', required: true},
+    text: {type: String, ref: 'users', required: true},
+    imageUrl: {type: String},
+    createdOn: { type: Date, default: Date.now }
+})
+
+export const msgModel = mongoose.model('Message', msgSchema)
