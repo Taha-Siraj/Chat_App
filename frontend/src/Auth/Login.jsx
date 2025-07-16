@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast, Toaster } from 'sonner';
 import { api } from '../Api';
+import { GlobalContext } from '../context/Context';
 
 const Login = () => {
-
+ const {state , dispatch} = useContext(GlobalContext)
+ console.log(state)
   const [LoginData , setLoginData] = useState({
     email: "",
     password: "",
@@ -32,10 +34,11 @@ const Login = () => {
       })
       toast.success(res.data.message)
       console.log(res.data)
-      setLoginData({email: "", password: ""})
-      setTimeout(() => {
-        navigate('/')
-      }, 1500);
+      dispatch({type: "USER_LOGIN", user: res.data.user})
+      // setLoginData({email: "", password: ""})
+      // setTimeout(() => {
+      //   navigate('/')
+      // }, 1500);
     } catch (error) {
       console.log(error)
       

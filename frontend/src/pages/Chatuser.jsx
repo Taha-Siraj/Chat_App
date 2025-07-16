@@ -5,8 +5,8 @@ import { api } from '../Api'
 
 const chat = () => {
 
-  console.log(id)
   const id = useParams()
+  console.log(id)
 
   const sentMsg =  async () => {
     try {
