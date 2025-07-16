@@ -104,7 +104,7 @@ app.post('/api/v1/logout', (req , res) => {
 //MiddleWare
 app.use('/api/v1/*splat', (req, res, next) => {
   const token = req.cookies.token;
-  console.log(token)
+  console.log("token", token)
   if(!token){
    return res.status(401).send({message: "Unauthorized"})
   }
@@ -133,9 +133,10 @@ app.use('/api/v1/*splat', (req, res, next) => {
 //User reload API
 app.get('/api/v1/userprofile', async (req, res) => {
   const id = req.body?.token?.user_id;
+  console.log("req.body.token", req.body)
   try {
     let user = await userModel.findById(id , {password: 0});
-    res.status(200).send({msg: "user Login", user:{
+    res.status(200).send({msg: "user found", user:{
       user_id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -143,8 +144,8 @@ app.get('/api/v1/userprofile', async (req, res) => {
       profile: user.profile,
     }})
   } catch (error) {
-     console.log(error)
-     res.status(500).send({msg: "internel Server error"})
+    res.status(500).send({msg: "internel Server error"})
+    console.log(error)
   }
 });
 

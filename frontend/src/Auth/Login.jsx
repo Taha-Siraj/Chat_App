@@ -33,8 +33,8 @@ const Login = () => {
         password
       })
       toast.success(res.data.message)
-      console.log(res.data)
       dispatch({type: "USER_LOGIN", user: res.data.user})
+      console.log(res.data)
       // setLoginData({email: "", password: ""})
       // setTimeout(() => {
       //   navigate('/')

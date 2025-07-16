@@ -1,9 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Link} from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { FaComments, FaLock, FaRocket, FaMobileAlt, FaUsers } from 'react-icons/fa';
+import { GlobalContext } from '../context/Context';
 const Home = () => {
 
+  const {state} = useContext(GlobalContext);
+  console.log(state)
   let arr = [
   {features: "Blazing Fast", icons: FaRocket , color: "#4ADE80", des: "Send and receive messages in real-time with lightning speed. No more waiting!" } ,
   {features: "Secure & Private", icons: FaLock , color: "#FACC15",   des: "Your conversations are encrypted and private. Chat with peace of mind." } ,
