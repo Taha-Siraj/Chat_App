@@ -14,26 +14,22 @@ const CustomRoutes = () => {
   
   return (
     <div>
-      <Header/>
       <Routes>
-      <Route path='/' element={<Home/>} /> 
-      {(state?.isLogin == true) ?(
+      <Route path='/' element={<Alluser/>} /> 
+      {state?.isLogin === true && (
       <>
        <Route path='/alluser' element={<Alluser/>}/> 
        <Route path='/chat/:id' element={<Chatuser/>} /> 
        <Route path='*' element={<Navigate to={"/"}/>} /> 
       </>
-      ): 
-      (state.isLogin == false ) ?
-      (<>
+      )} 
+
+      {state.isLogin == false &&  (
+      <>
       <Route path='/login' element={<Login/>} /> 
       <Route path='/signup' element={<Signup/>} /> 
       <Route path='*' element={<Navigate to={"/login"}/>} /> 
-      </>) 
-     
-      :
-      <Route path='*' element={<div>Loading...</div>} />
-      }
+      </>)} 
        </Routes>
     </div>
   )
