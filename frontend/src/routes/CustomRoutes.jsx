@@ -14,8 +14,9 @@ const CustomRoutes = () => {
   
   return (
     <div>
-      <Routes>
-      <Route path='/' element={<Alluser/>} /> 
+       <Header/>
+      <Routes> 
+      <Route path='/' element={<Home/>} /> 
       {state?.isLogin === true && (
       <>
        <Route path='/alluser' element={<Alluser/>}/> 

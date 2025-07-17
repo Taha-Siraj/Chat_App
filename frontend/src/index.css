@@ -7,3 +7,27 @@
   margin: 0;
   box-sizing: border-box;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #2D3748; 
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #4A90E2; 
+    border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: #357ABD; 
+}
+
+
+.custom-scrollbar {
+    scrollbar-width: thin; 
+    scrollbar-color: #4A90E2 #2D3748; 
+}
