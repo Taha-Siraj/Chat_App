@@ -6,9 +6,9 @@ import { api } from '../Api';
 const EditProfile = () => {
   const { state } = useContext(GlobalContext);
   const [updatedProfile, setupdatedProfile] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
+    firstName: state.user.firstName ,
+    lastName: state.user.lastName,
+    email: state.user.email,
     phoneNumber: "",
     Bio: ""
   })
