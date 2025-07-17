@@ -22,7 +22,7 @@ const Header = () => {
       let res = await api.post('/api/v1/logout');
       dispatch({type: "USER_LOGOUT", user: {}})
       toast.success("User Logout")
-
+      setIsOpenProfile(!IsopenProfile)
       console.log(res.data)
     } catch (error) {
       console.log("logout error" , error)
@@ -36,29 +36,51 @@ const Header = () => {
 
         <div className='md:flex hidden  justify-center items-center gap-x-5'>
             <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/'} > <FaHome className='text-[#bcbbbbcb]' /> Home</Link>
-            <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/chat/:id'} > <IoChatbubblesSharp className='text-[#bcbbbbcb]' /> Chat</Link>
+            {state.isLogin == true ? <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/chat/:id'} > <IoChatbubblesSharp className='text-[#bcbbbbcb]' /> Chat</Link> : null}
         </div>
 
         <div className='flex justify-center items-center gap-x-4'>
-          <img onClick={() => setIsOpenProfile(!IsopenProfile)} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s" className='border-2 border-[#818CF8] cursor-pointer h-12 rounded-full w-12' alt="" />
+          {state.isLogin == true ? <img onClick={() => setIsOpenProfile(!IsopenProfile)} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s" className='border-2 border-[#818CF8] cursor-pointer h-12 rounded-full w-12' alt="" /> : <Link to={'/login'} className='py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold'> Login</Link> }
           <span className='md:hidden cursor-pointer text-4xl font-bold text-white' onClick={() => setIsOpen(!isOpen)} ><IoMenu/></span>
         </div>
       </header>
 
-      {IsopenProfile ? <div className='font-poppins flex justify-between py-8 items-center flex-col text-white bg-[#1F2937] h-[300px] w-[230px] fixed right-16 top-[70px] border-[0.2px] rounded-xl border-[#dadada27]  '>
-        <div className='border-b pb-3  border-[#dadada4e] w-full flex flex-col justify-center items-center'>
-           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s" className='border-2 border-[#818CF8] cursor-pointer h-16 rounded-full w-16'/>
-        <h1 className='text-xl font-semibold' >{state?.user?.firstName}{state?.user?.lastName} </h1>
-        <p className='text-sm text-[#ffffff99]'>{state.user.email}</p>
-        </div>
-        <div className='flex justify-center px-4 items-start w-full flex-col gap-y-3'>
-        <Link to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'> <CgProfile className='text-xl' /> view profile</Link>
-        <Link to='/editprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'> <FaEdit className='text-xl'/> Edit  profile</Link>
-        <Link onClick={handleLogout} className='cursor-pointer text-md text-red-400 flex gap-x-2 justify-center items-center'> <HiOutlineLogout className='text-xl'/>Logout</Link>
-         </div>
-      </div>: null}
 
-     {isOpen ?     
+        {IsopenProfile ? 
+    <div className='font-poppins flex justify-between py-8 items-center flex-col text-white bg-[#1F2937] h-[300px] w-[230px] fixed right-16 top-[70px] border-[0.2px] rounded-xl border-[#dadada27]'>
+      <div className='border-b pb-3 border-[#dadada4e] w-full flex flex-col justify-center items-center'>
+        <img
+          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"
+          className='border-2 border-[#818CF8] cursor-pointer h-16 rounded-full w-16'
+        />
+        <h1 className='text-xl font-semibold'>
+          {state?.user?.firstName} {state?.user?.lastName}
+        </h1>
+        <p className='text-sm text-[#ffffff99]'>{state.user.email}</p>
+      </div>
+      <div className='flex justify-center px-4 items-start w-full flex-col gap-y-3'>
+        <Link to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
+          <CgProfile className='text-xl' /> View Profile
+        </Link>
+        <Link to='/editprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
+          <FaEdit className='text-xl' /> Edit Profile
+        </Link>
+        <Link onClick={handleLogout} className='cursor-pointer text-md text-red-400 flex gap-x-2 justify-center items-center'>
+          <HiOutlineLogout className='text-xl' /> Logout
+        </Link>
+      </div>
+    </div>
+   : null}
+
+
+
+
+
+
+
+
+      
+      {isOpen ?     
      <div className='md:hidden animate-fade-in-left bg-[#111827]/95 h-screen fixed top-0 left-0 right-0 flex flex-col justify-center items-center gap-y-5  ' >
       <span onClick={() => setIsOpen(!isOpen)} className='text-5xl font-bold hover:cursor-pointer text-white absolute right-6 top-4' ><IoClose /></span>
       <Link className='flex gap-x-2 font-semibold justify-start items-center text-2xl text-[#ffffffcb] hover:text-white'  to={'/'} > <FaHome /> Home</Link>
@@ -67,8 +89,12 @@ const Header = () => {
       <Link className='flex gap-x-2 justify-start font-semibold items-center text-2xl text-[#BDBEC0] hover:text-white'  to={'/'} > <FaEdit /> Edit</Link>
       <Link className='flex gap-x-2 justify-start font-semibold items-center text-2xl text-red-400 hover:text-red-300'  to={'/'} > <HiOutlineLogout /> Logout</Link>
       </div>
-
      : null}
+
+     
+
+      
+
       
       <style>{`
                 @keyframes fade-in-down {
