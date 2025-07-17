@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { IoChatbubblesSharp } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
@@ -7,13 +7,30 @@ import { CgProfile } from "react-icons/cg";
 import { FaEdit } from "react-icons/fa";
 import { HiOutlineLogout } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
+import { api } from '../Api';
+import { toast, Toaster } from 'sonner';
+import { GlobalContext } from '../context/Context';
 const Header = () => {
 
   const [isOpen , setIsOpen] = useState(false);
   const [IsopenProfile, setIsOpenProfile] = useState(false);
+  const {state, dispatch} = useContext(GlobalContext)
+
+
+  const handleLogout = async () => {
+    try {
+      let res = await api.post('/api/v1/logout');
+      dispatch({type: "USER_LOGOUT", user: {}})
+      toast.success("User Logout")
+
+      console.log(res.data)
+    } catch (error) {
+      console.log("logout error" , error)
+    }
+  }
   return (
     <div>
-
+      <Toaster richColors closeButton position='top-center' />
       <header className='bg-[#111827] fixed  h-[70px] w-full flex justify-between md:px-16 px-8 items-center gap-x-5'>
         <h1 className='text-4xl font-black text-white'> <span className='text-[#818CF8]'>Chat</span>App </h1>
 
@@ -31,13 +48,13 @@ const Header = () => {
       {IsopenProfile ? <div className='font-poppins flex justify-between py-8 items-center flex-col text-white bg-[#1F2937] h-[300px] w-[230px] fixed right-16 top-[70px] border-[0.2px] rounded-xl border-[#dadada27]  '>
         <div className='border-b pb-3  border-[#dadada4e] w-full flex flex-col justify-center items-center'>
            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s" className='border-2 border-[#818CF8] cursor-pointer h-16 rounded-full w-16'/>
-        <h1 className='text-xl font-semibold' >Taha Siraj</h1>
-        <p className='text-sm text-[#ffffff99]'>taha@gmail.com</p>
+        <h1 className='text-xl font-semibold' >{state?.user?.firstName}{state?.user?.lastName} </h1>
+        <p className='text-sm text-[#ffffff99]'>{state.user.email}</p>
         </div>
         <div className='flex justify-center px-4 items-start w-full flex-col gap-y-3'>
         <Link to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'> <CgProfile className='text-xl' /> view profile</Link>
         <Link to='/editprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'> <FaEdit className='text-xl'/> Edit  profile</Link>
-        <Link className='cursor-pointer text-md text-red-400 flex gap-x-2 justify-center items-center'> <HiOutlineLogout className='text-xl'/>Logout</Link>
+        <Link onClick={handleLogout} className='cursor-pointer text-md text-red-400 flex gap-x-2 justify-center items-center'> <HiOutlineLogout className='text-xl'/>Logout</Link>
          </div>
       </div>: null}
 
