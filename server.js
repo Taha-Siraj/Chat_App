@@ -164,6 +164,33 @@ app.get('/api/v1/allusers', async (req, res) => {
   }
 });
 
+app.put('/api/v1/updateprofile/:id', async (req, res) => {
+  const id = req.params.id;
+  let  {firstName , lastName , email, phoneNumber, Bio} = req.body;
+  phoneNumber = Number(phoneNumber)
+  if(!firstName || !lastName || !email){
+    res.status(404).send({message: "All Field required"})
+    return
+  }
+  try {
+    let updatedProfile = await userModel.findByIdAndUpdate(id,{
+      firstName,
+      lastName,
+      email,
+      PhoneNumber,
+      Bio},
+      {new: true}
+    )
+    if(!updatedProfile){
+    return res.status(404).send({msg: "User not found"})
+    }
+    res.status(200).send({msg: "updated profile" , updatedProfile})
+  } catch (error) {
+    res.status(500).send({msg: "internel server error"})
+    console.log(error)
+  }
+})
+
 app.post('/api/v1/chat/:id', async(req, res) => {
   const senderId = req.params.id;
   const reciverId = req.body.token.user_id;
