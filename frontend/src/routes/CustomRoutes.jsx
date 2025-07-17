@@ -8,6 +8,7 @@ import Header from '../pages/Header';
 import Alluser from '../pages/Alluser';
 import { GlobalContext } from '../context/Context';
 import ViewProfile from '../pages/ViewProfile';
+import EditProfile from '../pages/EditProfile';
 
 const CustomRoutes = () => {
 
@@ -24,6 +25,7 @@ const CustomRoutes = () => {
        <Route path='/alluser' element={<Alluser/>}/> 
        <Route path='/chat/:id' element={<Chatuser/>} /> 
        <Route path='/viewprofile' element={<ViewProfile/>} /> 
+       <Route path='/editprofile' element={<EditProfile/>} /> 
        <Route path='*' element={<Navigate to={"/"}/>} /> 
       </>
       )} 
