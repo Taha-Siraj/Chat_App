@@ -7,6 +7,7 @@ import { GlobalContext } from '../context/Context';
 
 const Alluser = () => {
  const [allUser , setAllUser] = useState([])
+ 
 
  const {state } = useContext(GlobalContext)
   const fetchalluser = async () => {
