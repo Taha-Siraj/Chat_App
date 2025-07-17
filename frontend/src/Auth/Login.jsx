@@ -32,10 +32,10 @@ const Login = () => {
         email,
         password
       })
-      toast.success(res.data.message)
       dispatch({type: "USER_LOGIN", user: res.data.user})
       console.log(res.data)
       setLoginData({email: "", password: ""})
+      toast.success(`Welcome Back`)
       setTimeout(() => {
         navigate("/alluser")
       }, 1500);
