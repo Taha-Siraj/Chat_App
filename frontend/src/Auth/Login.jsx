@@ -40,7 +40,7 @@ const Login = () => {
         navigate("/alluser")
       }, 1500);
     } catch (error) {
-      console.log(error)
+      toast.error(error.response.data.message)
       
     }
 

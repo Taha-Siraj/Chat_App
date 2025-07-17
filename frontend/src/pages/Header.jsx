@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { FaHome } from 'react-icons/fa'
 import { IoChatbubblesSharp } from 'react-icons/io5'
 import { Link } from 'react-router-dom'
@@ -16,6 +16,9 @@ const Header = () => {
   const [IsopenProfile, setIsOpenProfile] = useState(false);
   const {state, dispatch} = useContext(GlobalContext)
 
+  
+
+ 
 
   const handleLogout = async () => {
     try {
@@ -58,13 +61,13 @@ const Header = () => {
         </h1>
         <p className='text-sm text-[#ffffff99]'>{state.user.email}</p>
       </div>
-      <div className='flex justify-center px-4 items-start w-full flex-col gap-y-3'>
-        <Link to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
+      <div className='flex justify-start px-4 items-start w-full flex-col gap-y-3'>
+        <Link  onClick={() => setIsOpenProfile(!IsopenProfile)} to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
           <CgProfile className='text-xl' /> View Profile
         </Link>
-        <Link to='/editprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
+        <h1 className='hover:bg-gray-600 py-1 outline-none w-full'><Link onClick={() => setIsOpenProfile(!IsopenProfile)} to='/editprofile' className=' text-start text-md text-[#f3f3f3e8] flex gap-x-2 justify-start items-start'>
           <FaEdit className='text-xl' /> Edit Profile
-        </Link>
+        </Link></h1>
         <Link onClick={handleLogout} className='cursor-pointer text-md text-red-400 flex gap-x-2 justify-center items-center'>
           <HiOutlineLogout className='text-xl' /> Logout
         </Link>

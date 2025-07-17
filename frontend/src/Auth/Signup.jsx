@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Toaster, toast } from 'sonner';
 import { api } from '../Api';
 import axios from 'axios';
@@ -11,7 +11,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
-
+  const navigate = useNavigate()
   let handleChange = (e) => {
     let {name , value} = e.target;
     setSignupForm((prev) => ({
@@ -36,6 +36,7 @@ const Signup = () => {
       })
       toast.success(res.data.message);
       setSignupForm({firstName: "", lastName: "", email: "", password: ""})
+      setTimeout(() => {navigate('/login') } , 1000)
     } catch (error) {
       toast.error(error.response.data.message);
       

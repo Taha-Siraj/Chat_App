@@ -7,6 +7,7 @@ import Chatuser from '../pages/Chatuser';
 import Header from '../pages/Header';
 import Alluser from '../pages/Alluser';
 import { GlobalContext } from '../context/Context';
+import ViewProfile from '../pages/ViewProfile';
 
 const CustomRoutes = () => {
 
@@ -19,8 +20,10 @@ const CustomRoutes = () => {
       <Route path='/' element={<Home/>} /> 
       {state?.isLogin === true && (
       <>
+       <Route path='/' element={<Home/>}/> 
        <Route path='/alluser' element={<Alluser/>}/> 
        <Route path='/chat/:id' element={<Chatuser/>} /> 
+       <Route path='/viewprofile' element={<ViewProfile/>} /> 
        <Route path='*' element={<Navigate to={"/"}/>} /> 
       </>
       )} 
