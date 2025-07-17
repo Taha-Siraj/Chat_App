@@ -5,6 +5,7 @@ import { MdOutlineEmail } from "react-icons/md";
 import { Link } from 'react-router-dom';
 import { GlobalContext } from '../context/Context';
 import { FaRegIdCard } from "react-icons/fa";
+import { FaPhoneVolume } from "react-icons/fa6";
 const ViewProfile = () => {
   const {state } = useContext(GlobalContext)
   return (
@@ -21,6 +22,13 @@ const ViewProfile = () => {
           <div className='rounded-lg w-full py-3 px-3 flex justify-start items-center gap-x-3 bg-[#111827]'> 
           <MdOutlineEmail className='text-2xl text-[#4ADE80]'/>
            <h1 className='text-[18px]  text-[#ffffffbe]' ><span className='text-sm text-[#e8e8e8d7] font-normal' >Email Address</span> <br />  {state?.user?.email} </h1>
+          </div>
+          <div className='rounded-lg w-full py-3 px-3 flex justify-start items-center gap-x-3 bg-[#111827]'> 
+          <FaPhoneVolume className='text-2xl text-[#5da778]'/>
+           <h1 className='text-[18px]  text-[#ffffffbe]' ><span className='text-sm text-[#e8e8e8d7] font-normal' >Phone Number</span> <br />  {state?.user?.phoneNumber} </h1>
+          </div>
+          <div className='rounded-lg w-full py-3 px-3 flex justify-start items-center gap-x-3 bg-[#111827]'> 
+           <h1 className='text-[18px]  text-[#ffffffbe]' ><span className='text-sm text-[#e8e8e8d7] font-normal' >Bio</span> <br />  {state?.user?.bio} </h1>
           </div>
           <div className='rounded-lg w-full py-3 px-3 flex justify-start items-center gap-x-3 bg-[#111827]'> 
           <FaRegIdCard className='text-2xl text-[#C084FC]'/>
