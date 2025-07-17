@@ -1,11 +1,43 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { GlobalContext } from '../context/Context'
 import { FaUpload } from 'react-icons/fa';
+import { api } from '../Api';
 
 const EditProfile = () => {
   const { state } = useContext(GlobalContext);
+  const [updatedProfile, setupdatedProfile] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phoneNumber: "",
+    Bio: ""
+  })
 
+const handleChange = (e) => {
+const {name, value} = e.target;
 
+setupdatedProfile((prev) => ({
+  ...prev,
+  [name]: value
+}))
+console.log(updatedProfile)
+}
+
+const handleprofile = async () => {
+  let {firstName , lastName , email , phoneNumber , Bio} = updatedProfile;  
+  try {
+      let res = await api.put(`/api/v1/updateprofile/${state?.user?.user_id}`, {
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        Bio
+      })
+     console.log(res.data)
+    } catch (error) {
+      console.log("error", error.response.data)
+    }
+  } 
 
   let inputStyle = 'mt-2 bg-[#374151] outline-none focus:ring-[#6366F1] text-[15px] placeholder:capitalize focus:ring-4 py-4 px-4 rounded-lg w-full'
   return (
@@ -27,27 +59,48 @@ const EditProfile = () => {
           <div className='w-full flex flex-col justify-center gap-y-4'>
             <label className='text-sm text-white'> 
               First Name
-              <input type="text" placeholder='first name' className={inputStyle} />
+              <input
+              name='firstName'
+              value={updatedProfile.firstName}
+              onChange={handleChange}
+              type="text" placeholder='first name' className={inputStyle} />
             </label>
             <label className='text-sm text-white'> 
               Last Name
-              <input type="text" placeholder='first name' className={inputStyle} />
+              <input
+              name='lastName'
+              value={updatedProfile.lastName}
+              onChange={handleChange}
+              type="text" placeholder='first name' className={inputStyle} />
             </label>
             <label className='text-sm text-white'> 
              Email Address
-              <input type="text" placeholder='your,email@gmail.com' className={inputStyle} />
+              <input 
+              name='email'
+              value={updatedProfile.email}
+              onChange={handleChange}
+              type="text"
+             placeholder='your,email@gmail.com' className={inputStyle} />
             </label>
             <label className='text-sm text-white'> 
              Phone Number
-              <input type="number" placeholder='eg; +92 3XXXXXXXX' className={inputStyle} />
+              <input 
+              name='phoneNumber'
+              value={updatedProfile.phoneNumber}
+              onChange={handleChange}
+              type="number" placeholder='eg; +92 3XXXXXXXX' className={inputStyle} />
             </label>
             <label className='text-sm text-white'> 
              Bio (Optional)
-              <textarea placeholder='Tell Us about yourself...' className={inputStyle} />
+              <textarea 
+              name='Bio'
+              value={updatedProfile.Bio}
+              onChange={handleChange}
+              placeholder='Tell Us about yourself...' className={inputStyle} />
             </label>
           </div>
 
-          <button className='py-3 px-4 w-full rounded-lg font-semibold bg-blue-700 text-white' > Save Change</button>
+          <button onClick={handleprofile} className='py-3 px-4 w-full rounded-lg font-semibold bg-blue-700 text-white' > Save Change</button>
         </div>
       </div>
     </div>

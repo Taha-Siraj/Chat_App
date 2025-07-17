@@ -75,7 +75,7 @@ app.post('/api/v1/login', async(req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
-        phoneNumber: user.PhoneNumber,
+        phoneNumber: user.phoneNumber,
         bio: user.Bio,
         profile: user.profile,
     }, SECRET, {expiresIn: "1d"})
@@ -144,7 +144,7 @@ app.get('/api/v1/userprofile', async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       profile: user.profile,
-      phoneNumber: user.PhoneNumber,
+      phoneNumber: user.phoneNumber,
       bio: user.Bio,
     }})
   } catch (error) {
@@ -167,7 +167,13 @@ app.get('/api/v1/allusers', async (req, res) => {
 app.put('/api/v1/updateprofile/:id', async (req, res) => {
   const id = req.params.id;
   let  {firstName , lastName , email, phoneNumber, Bio} = req.body;
-  phoneNumber = Number(phoneNumber)
+  if (phoneNumber) {
+  phoneNumber = Number(phoneNumber);
+  if (isNaN(phoneNumber)) {
+    return res.status(400).send({ message: "Invalid phone number" });
+  }
+ }
+
   if(!firstName || !lastName || !email){
     res.status(404).send({message: "All Field required"})
     return
@@ -177,7 +183,7 @@ app.put('/api/v1/updateprofile/:id', async (req, res) => {
       firstName,
       lastName,
       email,
-      PhoneNumber,
+      phoneNumber,
       Bio},
       {new: true}
     )
