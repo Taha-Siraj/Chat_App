@@ -18,7 +18,7 @@ const Header = () => {
 
         <div className='md:flex hidden  justify-center items-center gap-x-5'>
             <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/'} > <FaHome className='text-[#bcbbbbcb]' /> Home</Link>
-            <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/chat'} > <IoChatbubblesSharp className='text-[#bcbbbbcb]' /> Chat</Link>
+            <Link className='flex gap-x-2 justify-center items-center text-xl text-[#bcbbbbcb]'  to={'/chat/:id'} > <IoChatbubblesSharp className='text-[#bcbbbbcb]' /> Chat</Link>
         </div>
 
         <div className='flex justify-center items-center gap-x-4'>
