@@ -75,6 +75,8 @@ app.post('/api/v1/login', async(req, res) => {
         firstName: user.firstName,
         lastName: user.lastName,
         email: user.email,
+        phoneNumber: user.PhoneNumber,
+        bio: user.Bio,
         profile: user.profile,
     }, SECRET, {expiresIn: "1d"})
 
@@ -142,6 +144,8 @@ app.get('/api/v1/userprofile', async (req, res) => {
       lastName: user.lastName,
       email: user.email,
       profile: user.profile,
+      phoneNumber: user.PhoneNumber,
+      bio: user.Bio,
     }})
   } catch (error) {
     res.status(500).send({msg: "internel Server error"})
