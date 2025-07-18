@@ -12,36 +12,61 @@ const EditProfile = () => {
     phoneNumber: "",
     Bio: ""
   })
+  const [image, setImage] = useState(null);
 
-const handleChange = (e) => {
-const {name, value} = e.target;
 
-setupdatedProfile((prev) => ({
-  ...prev,
-  [name]: value
-}))
-console.log(updatedProfile)
-}
+  const handleChange = (e) => {
+  const {name, value} = e.target;
 
-const handleprofile = async () => {
-  let {firstName , lastName , email , phoneNumber , Bio} = updatedProfile;  
+  setupdatedProfile((prev) => ({
+    ...prev,
+    [name]: value
+  }))
+  console.log(updatedProfile)
+  }
+
+  const handleprofile = async () => {
+    let {firstName , lastName , email , phoneNumber , Bio} = updatedProfile;  
+    try {
+        let res = await api.put(`/api/v1/updateprofile/${state?.user?.user_id}`, {
+          firstName,
+          lastName,
+          email,
+          phoneNumber,
+          Bio
+        })
+      console.log(res.data)
+      } catch (error) {
+        console.log("error", error.response.data)
+      }
+    } 
+
+
+ const handleUpload = async (e) => {
+  const file = e.target.files[0];
+  const formData = new FormData();
+  formData.append('image', file);
+
+  console.log(file);
+
   try {
-      let res = await api.put(`/api/v1/updateprofile/${state?.user?.user_id}`, {
-        firstName,
-        lastName,
-        email,
-        phoneNumber,
-        Bio
-      })
-     console.log(res.data)
-    } catch (error) {
-      console.log("error", error.response.data)
-    }
-  } 
+    const res = await api.put(`/api/v1/profile-pic/${state.user.user_id}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        withCredentials: true
+      }
+    });
+
+    console.log(res.data);
+  } catch (error) {
+    console.log(error.response?.data || error.message);
+  }
+};
 
   let inputStyle = 'mt-2 bg-[#374151] outline-none focus:ring-[#6366F1] text-[15px] placeholder:capitalize focus:ring-4 py-4 px-4 rounded-lg w-full'
   return (
     <div className='pt-20 bg-black min:h-screen font-poppins'>
+      
       <div className='flex flex-col justify-center items-center gap-y-8'>
         <h1 className='text-6xl font-extrabold text-center mt-4 text-[#818CF8] capitalize'> edit profile </h1>
         <div className='px-5 flex justify-center items-center flex-col py-6 gap-y-6 rounded-xl min-h-[500px] bg-[#1F2937] w-[500px]'>
@@ -53,6 +78,7 @@ const handleprofile = async () => {
               type="file"
               accept="image/*"
               className="hidden"
+              onChange={handleUpload}
               />
             </label>
           </div>

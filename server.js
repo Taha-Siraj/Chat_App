@@ -8,12 +8,14 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import  {userModel}  from './Model/model.js';
 import { msgModel } from './Model/model.js';
+import { upload } from './cloudinary.js';
 
 const app = express();
 app.use(cors({
   origin: true,
   credentials: true
 }));
+
 
 app.use(cookieParser());
 app.use(express.json());
@@ -236,6 +238,20 @@ app.get("/api/v1/conversation/:id", async (req, res) => {
     res.status(500).send({ msg: "internal server error" });
   }
 });
+
+
+app.put('/api/v1/profile-pic/:id', upload.single('image') , async (req, res) => {
+  let id = req.params.id;
+  try {
+    console.log(req.file);
+    const updatedUser = await userModel.findByIdAndUpdate(id,
+       { profile: req.file.path },)
+      res.status(200).send({message: 'Profile image updated', data: updatedUser})
+  } catch (error) {
+     console.error(error);
+    res.status(500).json({message: 'Server error' });
+  }
+})
 
 
 // const _dirname = path.resolve();
