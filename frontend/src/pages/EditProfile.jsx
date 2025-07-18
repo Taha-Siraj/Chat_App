@@ -2,6 +2,8 @@ import React, { useContext, useState } from 'react'
 import { GlobalContext } from '../context/Context'
 import { FaUpload } from 'react-icons/fa';
 import { api } from '../Api';
+import { Toaster , toast } from 'sonner';
+import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
   const { state } = useContext(GlobalContext);
@@ -13,7 +15,7 @@ const EditProfile = () => {
     Bio: ""
   })
   const [image, setImage] = useState(null);
-
+ const navigate = useNavigate()
 
   const handleChange = (e) => {
   const {name, value} = e.target;
@@ -35,6 +37,11 @@ const EditProfile = () => {
           phoneNumber,
           Bio
         })
+        toast.success("updated Profile")
+        setupdatedProfile({ phoneNumber: "" , Bio: ""});
+        setTimeout(() => {
+          navigate('/viewprofile')
+        }, 1000);
       console.log(res.data)
       } catch (error) {
         console.log("error", error.response.data)
@@ -66,7 +73,7 @@ const EditProfile = () => {
   let inputStyle = 'mt-2 bg-[#374151] outline-none focus:ring-[#6366F1] text-[15px] placeholder:capitalize focus:ring-4 py-4 px-4 rounded-lg w-full'
   return (
     <div className='pt-20 bg-black min:h-screen font-poppins'>
-      
+      <Toaster richColors position='top-center' closeButton />
       <div className='flex flex-col justify-center items-center gap-y-8'>
         <h1 className='text-6xl font-extrabold text-center mt-4 text-[#818CF8] capitalize'> edit profile </h1>
         <div className='px-5 flex justify-center items-center flex-col py-6 gap-y-6 rounded-xl min-h-[500px] bg-[#1F2937] w-[500px]'>

@@ -41,7 +41,7 @@ const Header = () => {
         </div>
 
         <div className='flex justify-center items-center gap-x-4'>
-          {state.isLogin == true ? <img onClick={() => setIsOpenProfile(!IsopenProfile)} src={state.user.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} className='border-2 border-[#818CF8] cursor-pointer h-12 rounded-full w-12' alt="" /> : <Link to={'/login'} className='py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold'> Login</Link> }
+          {state.isLogin == true ? <img onClick={() => setIsOpenProfile(!IsopenProfile)} src={state.user.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} className='border-2 border-[#818CF8] cursor-pointer h-14 rounded-full w-14' alt="" /> : <Link to={'/login'} className='py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold'> Login</Link> }
           <span className='md:hidden cursor-pointer text-4xl font-bold text-white' onClick={() => setIsOpen(!isOpen)} ><IoMenu/></span>
         </div>
       </header>
@@ -51,15 +51,15 @@ const Header = () => {
     <div className='font-poppins flex justify-between py-8 items-center flex-col text-white bg-[#1F2937] h-[300px] w-[230px] fixed right-16 top-[70px] border-[0.2px] rounded-xl border-[#dadada27]'>
       <div className='border-b pb-3 border-[#dadada4e] w-full flex flex-col justify-center items-center'>
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"
-          className='border-2 border-[#818CF8] cursor-pointer h-16 rounded-full w-16'
+          src={state.user.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"}
+          className='border-2 border-[#818CF8] cursor-pointer h-[70px] rounded-full w-[70px]'
         />
         <h1 className='text-xl font-semibold'>
           {state?.user?.firstName} {state?.user?.lastName}
         </h1>
         <p className='text-sm text-[#ffffff99]'>{state.user.email}</p>
       </div>
-      <div className='flex justify-start px-4 items-start w-full flex-col gap-y-3'>
+      <div className='flex justify-start px-4 py-3 items-start w-full flex-col gap-y-3'>
         <Link  onClick={() => setIsOpenProfile(!IsopenProfile)} to='/viewprofile' className='text-md text-[#f3f3f3e8] flex gap-x-2 justify-center items-center'>
           <CgProfile className='text-xl' /> View Profile
         </Link>
