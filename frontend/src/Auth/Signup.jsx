@@ -11,6 +11,7 @@ const Signup = () => {
     email: "",
     password: "",
   });
+  const [loading , setLoading] = useState(false);
   const navigate = useNavigate()
   let handleChange = (e) => {
     let {name , value} = e.target;
@@ -28,6 +29,7 @@ const Signup = () => {
       return
     }
     try {
+      setLoading(true)
       let res = await api.post("/api/v1/signup",{
         firstName,
         lastName,
@@ -37,7 +39,9 @@ const Signup = () => {
       toast.success(res.data.message);
       setSignupForm({firstName: "", lastName: "", email: "", password: ""})
       setTimeout(() => {navigate('/login') } , 1000)
+      setLoading(false)
     } catch (error) {
+      setLoading(false)
       toast.error(error.response.data.message);
       
     }
@@ -91,8 +95,8 @@ const Signup = () => {
            className={inputStyle} placeholder='Password' />
         </label>
 
-        <button className='w-full bg-[#16A34A] py-3 px-4 rounded-md text-xl font-semibold  text-white'>Signup</button>
-        <p className='text-center text-sm text-[#dadadabc]'>Already have an account? <Link to={'/login'} className='hover:underline text-[#4ADE80] font-semibold' >Login here </Link></p>
+        <button className='w-full bg-[#16A34A] py-3 px-4 rounded-md text-xl font-semibold  text-white'>{loading ? <div className='h-8 w-8 text-white border-4 border-t-transparent  border-[#fff] animate-spin rounded-full' ></div> : "Signup" }</button>
+        <p className='text-center text-sm text-[#dadadabc]'>Already have an account? <Link to={'/login'} className='hover:underline text-[#4ADE80] font-semibold' >Login here</Link></p>
       </div>
      </form>
     </div>

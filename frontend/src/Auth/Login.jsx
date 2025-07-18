@@ -5,7 +5,8 @@ import { api } from '../Api';
 import { GlobalContext } from '../context/Context';
 
 const Login = () => {
- const {state , dispatch} = useContext(GlobalContext)
+ const {state , dispatch} = useContext(GlobalContext);
+ const [loading , setLoading] = useState(false);
  console.log(state)
   const [LoginData , setLoginData] = useState({
     email: "",
@@ -28,6 +29,7 @@ const Login = () => {
       return
     }
     try {
+      setLoading(true)
       let res = await api.post('/api/v1/login',{
         email,
         password
@@ -39,8 +41,10 @@ const Login = () => {
       setTimeout(() => {
         navigate("/alluser")
       }, 1500);
+      setLoading(false)
     } catch (error) {
       toast.error(error.response.data.message)
+      setLoading(false)
       
     }
 
@@ -75,7 +79,7 @@ const Login = () => {
               className={inputStyle} placeholder='Password' />
            </label>
    
-           <button className='w-full bg-[#16A34A] py-3 px-4 rounded-md text-xl font-semibold  text-white'>Login</button>
+           <button className='w-full flex justify-center items-center bg-[#16A34A] py-3 px-4  rounded-md text-xl font-semibold  text-white'>{loading ? <div className='h-8 w-8 text-white border-4 border-t-transparent  border-[#fff] animate-spin rounded-full' ></div> : "Login" }</button>
            <p className='text-center text-sm text-[#dadadabc]'>Don’t have an account yet?  <Link to={'/Signup'} className='hover:underline text-[#4ADE80] font-semibold' >Sign up </Link></p>
          </div>
         </form>
