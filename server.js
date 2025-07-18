@@ -254,6 +254,9 @@ app.put('/api/v1/profile-pic/:id', upload.single('image') , async (req, res) => 
 })
 
 
+
+
+
 // const _dirname = path.resolve();
 // app.use('/', express.static(path.join(_dirname, '/frontend/dist')));
 // app.use('/*splat', express.static(path.join(_dirname, '/frontend/dist')));

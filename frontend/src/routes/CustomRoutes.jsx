@@ -22,7 +22,6 @@ const CustomRoutes = () => {
       {state?.isLogin === true && (
       <>
        <Route path='/' element={<Home/>}/> 
-       <Route path='/alluser' element={<Alluser/>}/> 
        <Route path='/chat/:id' element={<Chatuser/>} /> 
        <Route path='/viewprofile' element={<ViewProfile/>} /> 
        <Route path='/editprofile' element={<EditProfile/>} /> 
