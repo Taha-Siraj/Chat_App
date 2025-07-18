@@ -16,8 +16,6 @@ const Header = () => {
   const [IsopenProfile, setIsOpenProfile] = useState(false);
   const {state, dispatch} = useContext(GlobalContext)
 
-  
-
  
 
   const handleLogout = async () => {
@@ -43,7 +41,7 @@ const Header = () => {
         </div>
 
         <div className='flex justify-center items-center gap-x-4'>
-          {state.isLogin == true ? <img onClick={() => setIsOpenProfile(!IsopenProfile)} src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s" className='border-2 border-[#818CF8] cursor-pointer h-12 rounded-full w-12' alt="" /> : <Link to={'/login'} className='py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold'> Login</Link> }
+          {state.isLogin == true ? <img onClick={() => setIsOpenProfile(!IsopenProfile)} src={state.user.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} className='border-2 border-[#818CF8] cursor-pointer h-12 rounded-full w-12' alt="" /> : <Link to={'/login'} className='py-2 px-4 rounded-lg bg-blue-600 text-white font-semibold'> Login</Link> }
           <span className='md:hidden cursor-pointer text-4xl font-bold text-white' onClick={() => setIsOpen(!isOpen)} ><IoMenu/></span>
         </div>
       </header>
