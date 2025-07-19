@@ -16,6 +16,7 @@ const EditProfile = () => {
   })
   const [image, setImage] = useState(null);
  const navigate = useNavigate()
+  
 
   const handleChange = (e) => {
   const {name, value} = e.target;
@@ -26,6 +27,8 @@ const EditProfile = () => {
   }))
   console.log(updatedProfile)
   }
+
+    
 
   const handleprofile = async () => {
     let {firstName , lastName , email , phoneNumber , Bio} = updatedProfile;  

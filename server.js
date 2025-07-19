@@ -1,109 +1,30 @@
 import express from 'express';
 import cors from 'cors';
-import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import 'dotenv/config';
 import mongoose from 'mongoose';
-import path from 'path';
 import cookieParser from 'cookie-parser';
 import  {userModel}  from './Model/model.js';
-import { msgModel } from './Model/model.js';
 import { upload } from './cloudinary.js';
+import authApi from './api/auth.js'
+import {Chatrouter} from './api/message.js'
+import { Server } from 'socket.io';
+import { createServer } from 'http';
 
 const app = express();
+const server = createServer(app);
+const io = new Server(server, { cors: { origin: "*", methods: "*"} });
+app.use(cookieParser());
+app.use(express.json());
 app.use(cors({
   origin: true,
   credentials: true
 }));
-
-
-app.use(cookieParser());
-app.use(express.json());
 const SECRET = process.env.SECRET_KEY;
 mongoose.connect(process.env.MONGO_DB).then(() => {console.log("DB is connencted")});
 
-//signup API
-app.post("/api/v1/signup", async (req, res) => {
-  let {firstName , lastName , email , password} = req.body;
-  if(!firstName || !lastName || !email || !password){
-    res.status(404).send({message: "All Field required"})
-    return
-  }
-  email = email.toLowerCase();
-  try {
-    let exisEmail = await userModel.findOne({email})
-    if(exisEmail){
-      return res.status(404).send({message: "User Already exist with this email"})
-    } 
-    const salt = bcrypt.genSaltSync(10);    
-    const hash = bcrypt.hashSync(password, salt);
-    let result = await userModel.create({
-        firstName,
-        lastName,
-        email,
-        password: hash
-    });
-    const {password: _p, ...saveUser} = result._doc
-    res.status(201).send({message: "User Created Account sucessFully", saveUser})
-  }
-  catch (error) {
-    res.status(500).send({message: "internel server error"})
-    console.log(error);
-  }
-});
 
-// login API
-app.post('/api/v1/login', async(req, res) => {
-    let {email , password} = req.body;
-    if(!email || !password){
-    return  res.status(404).send({message: "All field requried"});  
-    } 
-
-    email = email.toLowerCase();
-
-    try {
-    let user = await userModel.findOne({email});
-    if(!user){
-        return res.status(404).send({message: "User Not found with this Email"}
-    )}
-
-    let isMatched = bcrypt.compareSync(password, user.password);
-    if(!isMatched){
-        return res.status(404).send({message: "Wrong Password"})
-    }
-
-    let token = jwt.sign({
-        user_id: user._id,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-        phoneNumber: user.phoneNumber,
-        bio: user.Bio,
-        profile: user.profile,
-    }, SECRET, {expiresIn: "1d"})
-
-    res.cookie('token', token,{
-        httpOnly: true,
-        secure: true,
-        maxAge: 24 * 60 * 60 * 1000,
-    })
-    const { password: _p, ...userWithoutPassword } = user._doc
-    res.status(200).send({message: "User SucessFully Login", user: userWithoutPassword});
-    } catch (error) {
-    res.status(500).send({message: "internel server error"})
-    console.log(error)
-    }
-})
-
-// Logout API
-app.post('/api/v1/logout', (req , res) => {
-    res.clearCookie('token',{
-        maxAge: 1,
-        httpOnly: true,
-        secure: true,
-    })
-    res.status(200).send({msg: "User Logout"});
-});
+app.use('/api/v1/', authApi)
 
 //MiddleWare
 app.use('/api/v1/*splat', (req, res, next) => {
@@ -136,10 +57,16 @@ app.use('/api/v1/*splat', (req, res, next) => {
 
 //User reload API
 app.get('/api/v1/userprofile', async (req, res) => {
-  const id = req.body?.token?.user_id;
+  let userId; 
+  if(req.query.user_id){
+    userId = req.query.user_id
+  }else{
+    userId = req.body.token.user_id;
+  }
+
   console.log("req.body.token", req.body)
   try {
-    let user = await userModel.findById(id , {password: 0});
+    let user = await userModel.findById(userId , {password: 0});
     res.status(200).send({msg: "user found", user:{
       user_id: user._id,
       firstName: user.firstName,
@@ -199,47 +126,6 @@ app.put('/api/v1/updateprofile/:id', async (req, res) => {
   }
 })
 
-app.post('/api/v1/chat/:id', async(req, res) => {
-  const senderId = req.params.id;
-  const reciverId = req.body.token.user_id;
-   const {message} = req.body;
-  try {
-    if (!reciverId || !senderId || !message) {
-      return res.status(400).send({ msg: "Missing fields" });
-    }
-    let result = await msgModel.create({
-      from: senderId,
-      to: reciverId,
-      text: message
-    })
-    res.status(201).send({msg: "sent msg", result})
-  } catch (error) {
-    console.error("Chat error:", error);
-    res.status(500).send({ msg: "Internal server error" });
-    
-  }
-})
-
-app.get("/api/v1/conversation/:id", async (req, res) => {
-  const reciverId = req.params.id;
-  const senderId = req.body.token.user_id;
-
-  try {
-    let usermsg = await msgModel.find({
-      $or: [
-        { from: reciverId, to: senderId },
-        { from: senderId, to: reciverId }
-      ]
-    });
-
-    res.status(200).send({ msg: "message found", usermsg });
-  } catch (error) {
-    console.log(error);
-    res.status(500).send({ msg: "internal server error" });
-  }
-});
-
-
 app.put('/api/v1/profile-pic/:id', upload.single('image') , async (req, res) => {
   let id = req.params.id;
   try {
@@ -253,6 +139,16 @@ app.put('/api/v1/profile-pic/:id', upload.single('image') , async (req, res) => 
   }
 })
 
+app.use('/api/v1', Chatrouter(io))
+
+io.on('connection', (socket) => {
+    console.log('a user connected', socket.id);
+
+    socket.on("disconnect", (reason) => {
+        console.log("Client disconnected:", socket.id, "Reason:", reason);
+    });
+
+});
 
 
 
@@ -261,6 +157,6 @@ app.put('/api/v1/profile-pic/:id', upload.single('image') , async (req, res) => 
 // app.use('/', express.static(path.join(_dirname, '/frontend/dist')));
 // app.use('/*splat', express.static(path.join(_dirname, '/frontend/dist')));
 
-app.listen(5004, () => {
+server.listen(5004, () => {
   console.log("Server Is running port 5004")
-});
+})
