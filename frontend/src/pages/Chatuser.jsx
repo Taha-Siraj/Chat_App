@@ -18,7 +18,6 @@ const Chat = () => {
    const fetchmsg = async () => {
     try {
       let res = await api.get(`/api/v1/conversation/${id}`)
-      console.log(res.data)
       setallMessage(res.data.conversion)
     } catch (error) {
       console.log(error)
@@ -29,10 +28,7 @@ const Chat = () => {
   const fetchUserdetails = async() => {
         try {
           let res = await api.get(`/api/v1/userprofile?user_id=${id}`)
-          console.log(res.data)
-          console.log(res.data.user.firstName ,  res.data.user.lastName)
           setuserdetails(res.data.user)
-
         } catch (error) {
           console.log("error user det", error)
         }
@@ -47,9 +43,14 @@ const Chat = () => {
         });
 
         socket.on(`${id}-${state.user.user_id}`, (data) => {
-          console.log("recive data", data.text)
-          setallMessage(prev => [...prev, data])
-        })
+        console.log("receive data", data);
+        setallMessage(prev => [...prev, data]);
+      });
+
+      //   socket.on(`${id}-${state.user.user_id}`, (data) => {
+      //   console.log("receive data", data);
+      //   setallMessage(prev => [...prev, data]);
+      // });
         socket.on('disconnect', (reason) => {
             console.log("Disconnected. Reason:", reason);
         });
@@ -69,10 +70,10 @@ const Chat = () => {
         to: state.user.user_id,
         message: message
       });
-      
+
       console.log("mesg sent" , res.data);
+      setallMessage(prev => [...prev, res.data.result])
       setChatMsg('')
-      fetchmsg()
     } catch (error) {
       console.log(error)
       console.log("Axios error:", error.response?.data || error.message);
@@ -92,8 +93,8 @@ const Chat = () => {
       <h1 className='text-3xl font-extrabold text-blue-500 capitalize'> Chat with {userdetails.firstName} {userdetails.lastName} </h1>
 
 <div className='flex justify-start items-start flex-col gap-3'>
-  {allmessage.map((msg) => (
-    <div key={msg?._id}  className={`py-2 px-4 rounded-md bg-blue-500 ${(msg.from == state.user.user_id) ? 'self-end bg-gray-400 text-black': ''}  `} >
+  {allmessage?.map((msg) => (
+    <div key={msg._id}  className={`py-2 px-4 rounded-md bg-blue-500 ${(msg.from == state.user.user_id) ? 'self-end bg-gray-400 text-black': ''}  `} >
       <p>{msg.text}</p>
       <span className='text-sm' >{moment(msg?.createdOn).fromNow()}</span>
     </div>
