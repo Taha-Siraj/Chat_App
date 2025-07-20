@@ -143,10 +143,11 @@ app.use('/api/v1', Chatrouter(io))
 
 io.on('connection', (socket) => {
     console.log('a user connected', socket.id);
-  
-     socket.on("disconnect", (reason) => {
-    console.log("Client disconnected:", socket.id, "Reason:", reason);
-  });
+
+    socket.on("disconnect", (reason) => {
+        console.log("Client disconnected:", socket.id, "Reason:", reason);
+    });
+
 });
 
 

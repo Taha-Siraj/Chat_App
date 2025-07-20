@@ -42,7 +42,7 @@ const Chat = () => {
             socket.emit("join-room", state.user.user_id);
         });
 
-        socket.on(`${id}-${state.user.user_id}`, (data) => {
+        socket.on(`${state.user.user_id}-${id}`, (data) => {
         console.log("receive data", data);
         setallMessage(prev => [...prev, data]);
       });
