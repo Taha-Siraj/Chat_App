@@ -43,6 +43,7 @@ const Chat = () => {
     const socket = io("http://localhost:5004");
     socket.on('connect', () => {
             console.log("Connected to server");
+            socket.emit("join-room", state.user.user_id);
         });
 
         socket.on(`${id}-${state.user.user_id}`, (data) => {
@@ -57,7 +58,7 @@ const Chat = () => {
         });
         return (() => {
           console.log("Component unmount")
-          socket.close(); 
+          socket.disconnect(); 
         })
    },[id, state.user.user_id])
 
@@ -68,8 +69,8 @@ const Chat = () => {
         to: state.user.user_id,
         message: message
       });
+      
       console.log("mesg sent" , res.data);
-     
       setChatMsg('')
       fetchmsg()
     } catch (error) {
@@ -84,9 +85,9 @@ const Chat = () => {
     } ,[id] )
   return (
    <>
-   <div className='flex '>
+   <div className='flex pt-18'>
    <Alluser className='h-screen w-full ' />
-    <div className='py-20 bg-black  text-white font-poppins w-full'>
+    <div className='py-20 bg-black overflow-y-scroll h-screen text-white font-poppins w-full'>
       <h1 className='text-5xl font-bold'>Chat</h1>
       <h1 className='text-3xl font-extrabold text-blue-500 capitalize'> Chat with {userdetails.firstName} {userdetails.lastName} </h1>
 

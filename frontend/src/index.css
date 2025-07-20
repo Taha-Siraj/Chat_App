@@ -17,17 +17,17 @@
     border-radius: 10px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #4A90E2; 
+#user-scroll::-webkit-scrollbar-thumb {
+    background: #0d2745; 
     border-radius: 10px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+#user-scroll::-webkit-scrollbar-thumb:hover {
     background: #357ABD; 
 }
 
 
-.custom-scrollbar {
+#user-scroll {
     scrollbar-width: thin; 
-    scrollbar-color: #4A90E2 #2D3748; 
+    scrollbar-color: #5e83ae #2D3748; 
 }
