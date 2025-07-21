@@ -22,7 +22,7 @@ const Chat = () => {
     } catch (error) {
       console.log(error)
     }
-  }
+   }
 
 
   const fetchUserdetails = async() => {
@@ -35,22 +35,17 @@ const Chat = () => {
   }
 
 
-   useEffect(() => {
+  useEffect(() => {
     const socket = io("http://localhost:5004");
     socket.on('connect', () => {
-            console.log("Connected to server");
-            socket.emit("join-room", state.user.user_id);
-        });
+    console.log("Connected to server");
+  });
 
-        socket.on(`${state.user.user_id}-${id}`, (data) => {
-        console.log("receive data", data);
-        setallMessage(prev => [...prev, data]);
-      });
+  socket.on(`${id}-${state.user.user_id}`, (data) => {
+  console.log("receive data", data);
+  setallMessage(prev => [...prev, data]);
+  });
 
-      //   socket.on(`${id}-${state.user.user_id}`, (data) => {
-      //   console.log("receive data", data);
-      //   setallMessage(prev => [...prev, data]);
-      // });
         socket.on('disconnect', (reason) => {
             console.log("Disconnected. Reason:", reason);
         });
@@ -61,7 +56,7 @@ const Chat = () => {
           console.log("Component unmount")
           socket.disconnect(); 
         })
-   },[id, state.user.user_id])
+   },[id]);
 
  const sentMsg = async () => {
     try {
@@ -92,14 +87,14 @@ const Chat = () => {
       <h1 className='text-5xl font-bold'>Chat</h1>
       <h1 className='text-3xl font-extrabold text-blue-500 capitalize'> Chat with {userdetails.firstName} {userdetails.lastName} </h1>
 
-<div className='flex justify-start items-start flex-col gap-3'>
-  {allmessage?.map((msg) => (
-    <div key={msg._id}  className={`py-2 px-4 rounded-md bg-blue-500 ${(msg.from == state.user.user_id) ? 'self-end bg-gray-400 text-black': ''}  `} >
-      <p>{msg.text}</p>
-      <span className='text-sm' >{moment(msg?.createdOn).fromNow()}</span>
+    <div className='flex justify-start items-start flex-col gap-3'>
+      {allmessage?.map((msg) => (
+        <div key={msg._id}  className={`py-2 px-4 rounded-md bg-blue-500 ${(msg.from == state.user.user_id) ? 'self-end bg-gray-400 text-black': ''}  `} >
+          <p>{msg.text}</p>
+          <span className='text-sm' >{moment(msg?.createdOn).fromNow()}</span>
+        </div>
+      ))}
     </div>
-  ))}
-</div>
      
       <input
         value={message}

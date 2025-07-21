@@ -28,7 +28,7 @@ const Alluser = () => {
         {allUser.map((eachuser) => (
             <Link to={`/chat/${eachuser?._id}`} key={eachuser._id} className='w-[250px] text-xl text-white flex justify-start hover:bg-blue-600 transition-all duration-300 items-center px-5 py-5 gap-4 '>
                 <img src={eachuser?.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} alt="" className='rounded-full h-12 w-12' />
-                <h1>{eachuser?.firstName} {eachuser?.lastName} {state.user.user_id === eachuser?._id ? "(You)" : null}   </h1>
+                <h1  >{eachuser?.firstName} {eachuser?.lastName} <span className='text-green-500 font-bold'> {state.user.user_id === eachuser?._id ? "(You) & Me" : null}</span>   </h1>
             </Link>
         ) )}
       </div>

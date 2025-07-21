@@ -6,10 +6,10 @@ import { msgModel } from '../Model/model.js';
 export function Chatrouter(io) {
  
   
-    const router = express.Router();
-router.post('/chat/:id', async(req, res) => {
-  const senderId = req.params.id;
-  const reciverId = req.body.token.user_id;
+  const router = express.Router();
+  router.post('/chat/:id', async(req, res) => {
+  const reciverId = req.params.id;
+  const senderId = req.body.token.user_id;
   const {message} = req.body;
   try {
     if (!reciverId || !senderId || !message) {
@@ -47,6 +47,7 @@ router.get("/conversation/:id", async (req, res) => {
     res.status(500).send({ msg: "internal server error" });
   }
 });
+
 return router;
 }
 
