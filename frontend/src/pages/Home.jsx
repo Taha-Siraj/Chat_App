@@ -3,6 +3,7 @@ import { Link} from 'react-router-dom'
 import { FaHome } from "react-icons/fa";
 import { FaComments, FaLock, FaRocket, FaMobileAlt, FaUsers } from 'react-icons/fa';
 import { GlobalContext } from '../context/Context';
+import Header from './Header';
 const Home = () => {
 
   const {state} = useContext(GlobalContext);
@@ -16,6 +17,7 @@ const Home = () => {
 
   return (
     <>
+    <Header />
     <div className='bg-black h-screen pt-24 font-poppins'>
      <div className='flex flex-col justify-center items-center h-full gap-y-3 px-3'>
       <span className='text-8xl  text-[#6366F1]' > <FaComments /></span>
