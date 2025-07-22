@@ -40,7 +40,7 @@ const Chat = () => {
     };
 
     useEffect(() => {
-        const socket = io("http://localhost:5004");
+        const socket = io("");
         socket.on('connect', () => {
             console.log("Connected to server");
         });
