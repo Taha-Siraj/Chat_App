@@ -64,7 +64,7 @@ const Chat = () => {
 
     const sentMsg = async () => {
         if (!message) {
-            console.log("demoooooooo");
+            console.log("");
             return;
         }
         try {
@@ -89,46 +89,53 @@ const Chat = () => {
     }, [id]);
 
     return (
-        <div className='flex  h-screen overflow-hidden'>
-            <div className='md:w-1/3 w-full h-screen'>
-                <Alluser className='h-full' />
-            </div>
-            <div className='flex flex-col justify-between bg-gradient-to-br from-gray-900 to-black text-white font-poppins w-full h-screen'>
-                <div className='pb-4 flex justify-center items-center border-b border-gray-700 w-full capitalize bg-black bg-opacity-50 backdrop-blur-md'>
-                    <img src={userdetails?.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} className='rounded-full h-16 w-16 mr-4 shadow-md' alt="User Profile" />
-                    <h1 className='text-xl font-bold text-blue-400'>{userdetails.firstName} {userdetails.lastName}</h1>
-                </div>
-
-                <div className='p-4 overflow-y-auto flex flex-col gap-2'>
-                    {allmessage?.map((msg) => (
-                        <div
-                            key={msg._id}
-                            className={`px-4 py-3 rounded-xl shadow-md ${msg.from == state.user.user_id ? 'bg-indigo-600 text-white self-end' : 'bg-gray-800 text-white self-start'}`}
-                        >
-                            <p className='text-lg'>{msg.text}</p>
-                            <span className='text-xs text-gray-400 mt-1 block'>{moment(msg?.createdOn).fromNow()}</span>
-                        </div>
-                    ))}
-                    <div ref={scrollRef} />
-                </div>
-
-                <div className=''>
-                    <input
-                        value={message}
-                        onChange={(e) => setChatMsg(e.target.value)}
-                        type="text"
-                        placeholder="Type your message..."
-                        className='flex-grow bg-gray-700 border border-gray-600 text-white py-2 px-3 rounded-full focus:outline-none focus:border-blue-500 shadow-sm'
-                    />
-                    <button
-                        onClick={sentMsg}
-                        className='ml-4 bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md'
-                    >
-                        <FiSend className="text-xl" />
-                    </button>
-                </div>
-            </div>
+    <>
+    <div className='flex bg-gray-900 overflow-hidden h-screen'>
+    <Alluser className='h-screen' />
+    <div className='bg-gray-900 h-[100vh] w-full'>
+        {id && userdetails ? 
+    <div id='user-scroll' className='flex flex-col w-full  bg-gradient-to-br from-gray-900 to-black text-white h-[100vh]'>
+    <div className='flex items-center gap-4 px-4 py-3 border-b border-gray-700 bg-black bg-opacity-50  backdrop-blur-md'>
+      <img src={userdetails?.profile} className='rounded-full h-16 w-16 shadow-md' />
+      <h1 className='text-xl font-bold text-blue-400'>
+        {userdetails.firstName} {userdetails.lastName}
+      </h1>
+    </div>
+    <div className='flex-1 overflow-y-auto p-4 flex flex-col gap-2'>
+      {allmessage?.map(msg => (
+        <div key={msg._id}
+          className={`px-4 py-3 rounded-xl shadow-md ${msg.from == state.user.user_id ? 'bg-indigo-600 self-end' : 'bg-gray-800 self-start'}`}>
+          
+          <span className='text-xs text-gray-400 mt-1 block'>{moment(msg?.createdOn).fromNow()}</span>
         </div>
+      ))}
+      <div ref={scrollRef} />
+    </div>
+    <div className='flex items-center py-3 px-4 border-t border-gray-700'>
+      <input
+        value={message}
+        onChange={(e) => setChatMsg(e.target.value)}
+        type="text"
+        placeholder="Type your message..."
+        className='flex-grow bg-gray-700 border border-gray-600 text-white py-3 px-4 rounded-full focus:outline-none focus:border-blue-500'/>
+      <button onClick={sentMsg} className='ml-4 bg-blue-500 hover:bg-blue-600 text-white p-3 rounded-full shadow-md'>
+        <FiSend className='text-xl' />
+      </button>
+    </div>
+    </div>
+    :
+    <div className='bg-gradient-to-br from-gray-900 via-black to-gray-800 w-full h-screen flex justify-center items-center'> 
+    <div className='text-center'>
+    <LuMessageSquareMore className='text-9xl text-indigo-400 mx-auto animate-pulse' />
+    <h1 className='text-4xl font-bold text-white capitalize flex justify-center items-center gap-x-4 mt-8 tracking-wider' >Select a User to Chat
+    </h1>
+    <p className='text-gray-400 mt-4'>Your conversations will appear here.</p>
+    </div>
+    </div>
+    }
+    </div>
+    </div>
+    </>
     );
 };
 

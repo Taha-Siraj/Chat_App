@@ -10,6 +10,7 @@ import authApi from './api/auth.js'
 import {Chatrouter} from './api/message.js'
 import { Server } from 'socket.io';
 import { createServer } from 'http';
+import path from 'path';
 
 const app = express();
 const server = createServer(app);
@@ -151,11 +152,9 @@ io.on('connection', (socket) => {
 });
 
 
-
-
-// const _dirname = path.resolve();
-// app.use('/', express.static(path.join(_dirname, '/frontend/dist')));
-// app.use('/*splat', express.static(path.join(_dirname, '/frontend/dist')));
+const _dirname = path.resolve();
+app.use('/', express.static(path.join(_dirname, '/frontend/dist')));
+app.use('/*splat', express.static(path.join(_dirname, '/frontend/dist')));
 
 server.listen(5004, () => {
   console.log("Server Is running port 5004")
