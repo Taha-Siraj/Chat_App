@@ -105,7 +105,9 @@ const Chat = () => {
       {allmessage?.map(msg => (
         <div key={msg._id}
           className={`px-4 py-3 rounded-xl shadow-md ${msg.from == state.user.user_id ? 'bg-indigo-600 self-end' : 'bg-gray-800 self-start'}`}>
-          
+         
+        <p className="break-all break-words"> {msg.text}</p>
+        
           <span className='text-xs text-gray-400 mt-1 block'>{moment(msg?.createdOn).fromNow()}</span>
         </div>
       ))}
