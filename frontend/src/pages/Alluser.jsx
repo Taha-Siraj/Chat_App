@@ -7,16 +7,17 @@ import { GlobalContext } from '../context/Context';
 
 const Alluser = () => {
  const [allUser , setAllUser] = useState([])
+ console.log(allUser)
  
 
  const {state } = useContext(GlobalContext)
   const fetchalluser = async () => {
    try {
     let res = await api.get("/api/v1/allusers");
-    console.log(res.data.user);
+    console.log(res.data);
     setAllUser(res.data.user)
    } catch (error) {
-    console.log(error)
+    console.log("error" , error)
    }
   }
   useEffect(() => {
@@ -30,7 +31,7 @@ const Alluser = () => {
             <Link to={`/chat/${eachuser?._id}`} key={eachuser._id} className='w-[250px] text-xl text-white flex justify-start hover:bg-blue-600 transition-all duration-300 items-center px-5 py-5 gap-4 '>
                 <img src={eachuser?.profile || "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s"} alt="" className='rounded-full h-12 w-12' />
                 
-                <h1 className='text-sm' >{eachuser?.firstName} {eachuser?.lastName} <span className='text-green-500 font-bold'> {state.user.user_id === eachuser?._id ? "(You) & Me" : null}</span>   </h1>
+                <h1 className='text-sm' >{eachuser?.firstName} {eachuser?.lastName} <span className='text-green-500 font-bold'>{state.user.user_id === eachuser?._id ? "(You) & Me" : null}</span>   </h1>
             </Link>
         ) )}
       </div>

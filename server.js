@@ -94,6 +94,7 @@ app.get('/api/v1/allusers', async (req, res) => {
   }
 });
 
+
 app.put('/api/v1/updateprofile/:id', async (req, res) => {
   const id = req.params.id;
   let  {firstName , lastName , email, phoneNumber, Bio} = req.body;

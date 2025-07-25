@@ -23,10 +23,11 @@ const Chat = () => {
 
     const fetchmsg = async () => {
         try {
-            let res = await api.get(`/api/v1/conversation/${id}`);
-            setallMessage(res.data.conversion);
+        let res = await api.get(`/api/v1/conversation/${id}`);
+        setallMessage(res.data.conversion);
+        console.log(res.data);
         } catch (error) {
-            console.log(error);
+        console.log(error, "error msg");
         }
     };
 
@@ -40,7 +41,7 @@ const Chat = () => {
     };
     
     useEffect(() => {
-        const socket = io("");
+        const socket = io("http://localhost:5004");
         socket.on('connect', () => {
             console.log("Connected to server");
         });
@@ -75,7 +76,7 @@ const Chat = () => {
             });
 
             console.log("mesg sent", res.data);
-            setallMessage(prev => [...prev, res.data.result]);
+            setallMessage(prev => [...prev, res.data.conversation]);
             setChatMsg('');
         } catch (error) {
             console.log(error);
@@ -104,7 +105,7 @@ const Chat = () => {
     <div className='flex-1 overflow-y-auto p-4 flex flex-col gap-2'>
       {allmessage?.map(msg => (
         <div key={msg._id}
-          className={`px-4 py-3 rounded-xl shadow-md ${msg.from == state.user.user_id ? 'bg-indigo-600 self-end' : 'bg-gray-800 self-start'}`}>
+          className={`px-4 py-3 rounded-xl shadow-md ${msg.from._id == state.user.user_id ? 'bg-indigo-600 self-end' : 'bg-gray-800 self-start'}`}>
          
         <p className="break-all break-words"> {msg.text}</p>
         
