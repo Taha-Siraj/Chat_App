@@ -7,6 +7,7 @@ import axios from 'axios'
 import io from 'socket.io-client';
 import { useState } from 'react'
 import { Toaster, toast } from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom'
 
 const App = () => {
 
@@ -25,21 +26,32 @@ const App = () => {
     }
     userProfile()
     },[])
+ const navigate =  useNavigate()
 
+ useEffect(() => {
+  if (notification.length === 0) return;
 
-   useEffect(() => {
-  if (notification.length > 0) {
-    const lastMsg = notification[notification.length - 1];
-    toast.success(`${lastMsg?.from?.firstName} ${lastMsg?.from?.lastName}: ${lastMsg?.text}`,{
-        duration: 5000,
-        style: {
-      background: "#1f2937",
-      color: "#fff",
-      cursor: "pointer",
-    },
-    });
-  }
+  const lastMsg = notification[notification.length - 1];
+  if (!lastMsg || !lastMsg._id) return;
+
+  toast.custom((t) => (
+    <div
+      className="bg-white transition-all duration-300 hover:scale-90 text-black px-4 py-3 rounded shadow-lg cursor-pointer"
+      onClick={() => {
+        navigate(`/chat/${lastMsg?.from?._id}`);
+        toast.dismiss(t.id);
+      }}>
+      <strong>{lastMsg?.from?.firstName} {lastMsg?.from?.lastName}</strong>
+      <p className="text-sm">{lastMsg?.text}</p>
+    </div>
+  ), {
+    duration: 5000,
+    position: 'top-center',
+    id: lastMsg._id,
+  });
+
 }, [notification]);
+
 
     useEffect(() => {
         const socket = io("http://localhost:5004");
@@ -59,8 +71,6 @@ const App = () => {
         socket.on('error', (error) => {
             console.log("Error:", error);
         });
-
-
 
         return (() => {
             console.log("Component unmount")
