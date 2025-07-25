@@ -1,58 +1,100 @@
-import React, { useContext } from 'react'
-import { Link} from 'react-router-dom'
-import { FaHome } from "react-icons/fa";
-import { FaComments, FaLock, FaRocket, FaMobileAlt, FaUsers } from 'react-icons/fa';
-import { GlobalContext } from '../context/Context';
+import { Link } from 'react-router-dom';
+import {
+  FaComments,
+  FaRocket,
+  FaLock,
+  FaMobileAlt,
+  FaUsers,
+} from 'react-icons/fa';
 import Header from './Header';
-const Home = () => {
 
-  const {state} = useContext(GlobalContext);
-  console.log(state)
-  let arr = [
-  {features: "Blazing Fast", icons: FaRocket , color: "#4ADE80", des: "Send and receive messages in real-time with lightning speed. No more waiting!" } ,
-  {features: "Secure & Private", icons: FaLock , color: "#FACC15",   des: "Your conversations are encrypted and private. Chat with peace of mind." } ,
-  {features: "Cross-Platform", icons: FaMobileAlt , color: "#60A5FA",  des: "Access your chats from any device - desktop, tablet, or mobile." } ,
-  {features: "User-Friendly", icons: FaUsers , color: "#F87171",   des: "An intuitive interface designed for effortless communication." } ,
-  ] 
+const features = [
+  {
+    title: 'Blazing Fast',
+    Icon: FaRocket,
+    color: 'text-green-400',
+    text: 'Send and receive messages instantly—no waiting.',
+  },
+  {
+    title: 'Secure & Private',
+    Icon: FaLock,
+    color: 'text-yellow-400',
+    text: 'End-to-end encryption keeps every chat safe.',
+  },
+  {
+    title: 'Cross-Platform',
+    Icon: FaMobileAlt,
+    color: 'text-blue-400',
+    text: 'Seamless sync across desktop, tablet & mobile.',
+  },
+  {
+    title: 'User-Friendly',
+    Icon: FaUsers,
+    color: 'text-red-400',
+    text: 'Clean, intuitive interface—chat without learning.',
+  },
+];
 
+export default function Home() {
   return (
     <>
-    <Header />
-    <div className='bg-black h-screen pt-24 font-poppins'>
-     <div className='flex flex-col justify-center items-center h-full gap-y-3 px-3'>
-      <span className='text-8xl  text-[#6366F1]' > <FaComments /></span>
-     <h1 className='md:text-7xl sm:text-5xl text-4xl text-center font-black text-white'>Connect Instantly.</h1>
-     <h1 className='md:text-7xl sm:text-5xl text-4xl text-center font-black text-white'>Chat Seamlessly.</h1>
-     <p className='text-sm md:text-xl  text-[#bcbbbbcb] text-center px-4'>Experience real-time conversations with friends, family, and colleagues. <br /> Fast, secure, and intuitive chat at your fingertips.</p>
-     <Link to={'/chat'} className='py-4 px-7 rounded-full  bg-[#4F46E5] text-white font-semibold text-xl' >Go to Chat </Link>
-     </div>
+      <Header />
+      <main className="min-h-screen bg-black font-sans text-white">
+        {/* Hero */}
+        <section className="flex h-[calc(100vh-6rem)] flex-col items-center justify-center gap-y-4 px-4 text-center">
+          <FaComments className="text-8xl text-indigo-500" />
+          <h1 className="text-4xl font-extrabold sm:text-5xl md:text-7xl">
+            Connect Instantly.
+            <br />
+            Chat Seamlessly.
+          </h1>
+          <p className="max-w-2xl text-sm text-gray-400 md:text-xl">
+            Real-time conversations with friends, family & colleagues—fast,
+            secure, and intuitive.
+          </p>
+          <Link
+            to="/chat"
+            className="rounded-full bg-indigo-600 px-8 py-3 text-lg font-semibold hover:bg-indigo-500"
+          >
+            Go to Chat
+          </Link>
+        </section>
 
-     <div className='bg-[#1F2937] w-full flex justify-center items-center flex-col py-5' >
-      <h1 className='text-4xl text-white font-extrabold'>Why Choose ChatApp?</h1>
-      <div className='grid md:grid-cols-2 lg:grid-cols-4 gap-4 justify-between items-center px-10 py-10 gap-x-6'>
-        {arr.map((item, index) => {
-          const Icon = item.icons;
-          return(
-            <div key={index}className='rounded-lg text-white p-5 gap-y-3 text-center bg-[#111827] flex flex-col justify-center items-center h-[200px] w-full   md:w-[250px]' > 
-          <span style={{color: item.color}} className='text-4xl'>
-           <Icon />
-          </span>
-            <h1 className='text-2xl font-bold'>{item.features}</h1>
-            <p className='text-[#bcbbbbcb] text-[14px]'>{item.des}</p>
-            </div>
-          )
-        })}
-      </div>
-     </div>
+        {/* Features */}
+        <section className="bg-gray-900 py-16">
+          <h2 className="text-center text-4xl font-extrabold">
+            Why Choose ChatApp?
+          </h2>
+          <div className="mx-auto mt-10 grid max-w-7xl gap-6 px-4 sm:grid-cols-2 lg:grid-cols-4">
+            {features.map(({ title, Icon, color, text }) => (
+              <div
+                key={title}
+                className="flex flex-col items-center rounded-xl bg-gray-800 p-6"
+              >
+                <Icon className={`mb-3 text-4xl ${color}`} />
+                <h3 className="mb-1 text-xl font-bold">{title}</h3>
+                <p className="text-center text-sm text-gray-400">{text}</p>
+              </div>
+            ))}
+          </div>
+        </section>
 
-     <div className='bg-black py-20 flex flex-col justify-center items-center gap-y-5 '>
-         <h1 className='md:text-5xl sm:text-5xl text-4xl text-center font-black text-white'>Ready to Start Chatting?</h1>
-          <p className='text-sm md:text-xl  text-[#bcbbbbcb] text-center px-4'>Join thousands of users who are enjoying seamless  communication.<br />  Sign up now and connect with your world!</p>
-           <Link to={'/chat'} className='py-4 px-6 rounded-full  bg-[#4F46E5] text-white font-semibold text-xl' >Continue to Chat</Link>
-     </div>
-    </div>
+        {/* CTA */}
+        <section className="flex flex-col items-center gap-y-4 py-20 px-4 text-center">
+          <h2 className="text-4xl font-extrabold sm:text-5xl">
+            Ready to Start Chatting?
+          </h2>
+          <p className="max-w-2xl text-sm text-gray-400 md:text-xl">
+            Join thousands already enjoying seamless communication.
+          </p>
+          <Link
+            to="/chat"
+            className="rounded-full bg-indigo-600 px-8 py-3 text-lg font-semibold hover:bg-indigo-500"
+          >
+            Continue to Chat
+          </Link>
+        </section>
+      </main>
     </>
-  )
+  );
 }
-
-export default Home

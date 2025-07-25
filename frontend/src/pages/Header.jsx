@@ -8,7 +8,7 @@ import { FaEdit } from "react-icons/fa";
 import { HiOutlineLogout } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import { api } from '../Api';
-import { toast, Toaster } from 'sonner';
+import { toast, Toaster } from 'react-hot-toast';
 import { GlobalContext } from '../context/Context';
 const Header = () => {
 

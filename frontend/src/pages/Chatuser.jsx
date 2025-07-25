@@ -38,7 +38,7 @@ const Chat = () => {
             console.log("error user det", error);
         }
     };
-
+    
     useEffect(() => {
         const socket = io("");
         socket.on('connect', () => {

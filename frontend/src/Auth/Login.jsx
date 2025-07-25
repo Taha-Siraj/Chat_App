@@ -1,92 +1,92 @@
-import React, { useContext, useState } from 'react';
+import { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { toast, Toaster } from 'sonner';
-import { api } from '../Api';
+import { Toaster, toast } from 'react-hot-toast';
 import { GlobalContext } from '../context/Context';
+import { api } from '../Api';
 
-const Login = () => {
- const {state , dispatch} = useContext(GlobalContext);
- const [loading , setLoading] = useState(false);
- console.log(state)
-  const [LoginData , setLoginData] = useState({
-    email: "",
-    password: "",
-  })
-  const navigate = useNavigate()
-  let handleChange = (e) => {
-    let {name , value} = e.target;
-    setLoginData((prev) => ({
-      ...prev,
-      [name]: value
-    })) 
-  }
-  
-  const loginForm =  async (e) => {
+export default function Login() {
+  const { dispatch } = useContext(GlobalContext);
+  const [form, setForm] = useState({ email: '', password: '' });
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const handleChange = (e) =>
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let {email , password} = LoginData;
-    if(!email || !password){
-      toast.warning("All field requried");
-      return
+    if (!form.email || !form.password) {
+      toast.warning('All fields are required');
+      return;
     }
+    setLoading(true);
     try {
-      setLoading(true)
-      let res = await api.post('/api/v1/login',{
-        email,
-        password
-      })
-      dispatch({type: "USER_LOGIN", user: res.data.user})
-      console.log(res.data)
-      setLoginData({email: "", password: ""})
-      toast.success(`Welcome Back`)
-      setTimeout(() => {
-        navigate("/alluser")
-      }, 1500);
-      setLoading(false)
-    } catch (error) {
-      console.log(error)
-      toast.error(error?.response?.data?.message)
-      setLoading(false)
-      
+      const { data } = await api.post('/api/v1/login', form);
+      dispatch({ type: 'USER_LOGIN', user: data.user });
+      toast.success('Welcome back');
+      setTimeout(() => navigate('/alluser'), 1000);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Login failed');
+    } finally {
+      setLoading(false);
     }
+  };
 
-  }
-
-  let inputStyle = 'py-3 px-4 rounded-lg outline-none  focus:ring-2 ring-[#22C55E]  border-[0.5px] bg-[#374151] border-[#dadada6b] w-full'
+  const inputClass =
+    'py-3 px-4 rounded-xl bg-slate-800 border border-slate-600 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition w-full placeholder-slate-500';
 
   return (
-   <>
-    <div className='py-20 bg-black h-screen flex justify-center items-center' >
-         <Toaster richColors position='top-center' closeButton />
-        <form onSubmit={loginForm} >
-          <div  className='rounded-xl bg-[#1F2937] w-[450px] flex justify-center px-10 gap-y-4 flex-col  h-[400px]'>
-           <h1 className='font-bold text-3xl text-center text-[#4ADE80]'>Welcome Back!</h1>
+    <div className="flex min-h-screen items-center justify-center bg-black">
+      <Toaster position="top-center" />
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md space-y-6 rounded-2xl bg-slate-900 p-10 shadow-2xl"
+      >
+        <h1 className="text-center text-3xl font-bold text-green-400">
+          Welcome back
+        </h1>
 
-           <label className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-             Email
-             <input 
-             value={LoginData.email}
-             onChange={handleChange}
-             name='email'
-             type="email" 
-             className={inputStyle} placeholder='Email' />
-           </label>
-           <label className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-             Password
-             <input
-              value={LoginData.password}
-              onChange={handleChange}
-              name='password'
-              type="password" 
-              className={inputStyle} placeholder='Password' />
-           </label>
-   
-           <button className='w-full flex justify-center items-center bg-[#16A34A] py-3 px-4  rounded-md text-xl font-semibold  text-white'>{loading ? <div className='h-8 w-8 text-white border-4 border-t-transparent  border-[#fff] animate-spin rounded-full' ></div> : "Login" }</button>
-           <p className='text-center text-sm text-[#dadadabc]'>Don’t have an account yet?  <Link to={'/Signup'} className='hover:underline text-[#4ADE80] font-semibold' >Sign up </Link></p>
-         </div>
-        </form>
-       </div>
-   </>
-  )
+        <input
+          name="email"
+          type="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="Email"
+          className={inputClass}
+          required
+        />
+        <input
+          name="password"
+          type="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="Password"
+          className={inputClass}
+          required
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex h-12 w-full items-center justify-center rounded-xl bg-green-600 font-semibold text-white transition hover:bg-green-500 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          ) : (
+            'Log in'
+          )}
+        </button>
+
+        <p className="text-center text-sm text-slate-400">
+          Don’t have an account?{' '}
+          <Link
+            to="/signup"
+            className="font-semibold text-green-400 hover:underline"
+          >
+            Sign up
+          </Link>
+        </p>
+      </form>
+    </div>
+  );
 }
-
-export default Login

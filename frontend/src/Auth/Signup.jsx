@@ -1,106 +1,116 @@
-import React, { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Toaster, toast } from 'sonner';
+import { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Toaster, toast } from 'react-hot-toast';
 import { api } from '../Api';
-import axios from 'axios';
-const Signup = () => {
 
-  const [signupForm , setSignupForm] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    password: "",
+export default function Signup() {
+  const [form, setForm] = useState({
+    firstName: '',
+    lastName: '',
+    email: '',
+    password: '',
   });
-  const [loading , setLoading] = useState(false);
-  const navigate = useNavigate()
-  let handleChange = (e) => {
-    let {name , value} = e.target;
-    setSignupForm((prev) => ({
-      ...prev,
-      [name]: value
-    })) 
-  }
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const handleSignup = async (e) => {
+  const handleChange = (e) =>
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    let {firstName, lastName , email, password} = signupForm;
-    if(!firstName || !lastName || !email || !password){
-      toast.warning("All filed reqried")
-      return
+    if (Object.values(form).some((v) => !v)) {
+      toast.warning('All fields are required');
+      return;
     }
+    setLoading(true);
     try {
-      setLoading(true)
-      let res = await api.post("/api/v1/signup",{
-        firstName,
-        lastName,
-        email,
-        password
-      })
-      toast.success(res.data.message);
-      setSignupForm({firstName: "", lastName: "", email: "", password: ""})
-      setTimeout(() => {navigate('/login') } , 1000)
-      setLoading(false)
-    } catch (error) {
-      setLoading(false)
-      toast.error(error.response.data.message);
-      
+      await api.post('/api/v1/signup', form);
+      toast.success('Account created');
+      setTimeout(() => navigate('/login'), 1000);
+    } catch (err) {
+      toast.error(err?.response?.data?.message || 'Signup failed');
+    } finally {
+      setLoading(false);
     }
+  };
 
-
-  }
-
-    let inputStyle = 'py-3 px-4 rounded-lg outline-none  focus:ring-2 ring-[#22C55E]  border-[0.5px] bg-[#374151] border-[#dadada6b] w-full'
+  const inputClass =
+    'py-3 px-4 rounded-xl bg-slate-800 border border-slate-600 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition w-full placeholder-slate-500';
 
   return (
-    <div className='py-20 bg-black h-screen flex justify-center items-center' >
-      <Toaster richColors position='top-center' closeButton />
-     <form onSubmit={handleSignup} >
-       <div  className='rounded-xl bg-[#1F2937] w-[450px] flex justify-center px-10 gap-y-4 flex-col  h-[550px]'>
-        <h1 className='font-bold text-3xl text-center text-[#4ADE80]'>Join ChatApp!</h1>
-        <label className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-          Fisrt Name
-          <input 
-          name='firstName'
-          value={signupForm.firstName}
-          onChange={handleChange}
-          type="text" 
-          className={inputStyle}
-           placeholder='First Name' />
-        </label>
-        <label  className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-          Last Name
-          <input 
-           name='lastName'
-          value={signupForm.lastName}
-          onChange={handleChange}
-          type="text"
-          className={inputStyle} placeholder='Last Name' />
-        </label>
-        <label className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-          Email
-          <input 
-          name='email'
-          value={signupForm.email}
-          onChange={handleChange}
-          type="email" 
-          className={inputStyle} placeholder='Email' />
-        </label>
-        <label className='text-[17px] text-[#e0e0e0dc] flex flex-col gap-y-1'>
-          Password
+    <div className="flex min-h-screen items-center justify-center bg-black">
+      <Toaster position="top-center" />
+      <form
+        onSubmit={handleSubmit}
+        className="w-full max-w-md space-y-5 rounded-2xl bg-slate-900 p-10 shadow-2xl"
+      >
+        <h1 className="text-center text-3xl font-bold text-green-400">
+          Create Account
+        </h1>
+
+        <div className="grid grid-cols-2 gap-4">
           <input
-          name='password'
-          value={signupForm.password}
+            name="firstName"
+            value={form.firstName}
+            onChange={handleChange}
+            type="text"
+            placeholder="First name"
+            className={inputClass}
+            required
+          />
+          <input
+            name="lastName"
+            value={form.lastName}
+            onChange={handleChange}
+            type="text"
+            placeholder="Last name"
+            className={inputClass}
+            required
+          />
+        </div>
+
+        <input
+          name="email"
+          value={form.email}
           onChange={handleChange}
-           type="password" 
-           className={inputStyle} placeholder='Password' />
-        </label>
+          type="email"
+          placeholder="Email"
+          className={inputClass}
+          required
+        />
 
-        <button className='w-full bg-[#16A34A] py-3 px-4 rounded-md text-xl font-semibold  text-white'>{loading ? <div className='h-8 w-8 text-white border-4 border-t-transparent  border-[#fff] animate-spin rounded-full' ></div> : "Signup" }</button>
-        <p className='text-center text-sm text-[#dadadabc]'>Already have an account? <Link to={'/login'} className='hover:underline text-[#4ADE80] font-semibold' >Login here</Link></p>
-      </div>
-     </form>
+        <input
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          type="password"
+          placeholder="Password"
+          className={inputClass}
+          required
+        />
+
+        <button
+          type="submit"
+          disabled={loading}
+          className="flex h-12 w-full items-center justify-center rounded-xl bg-green-600 font-semibold text-white transition hover:bg-green-500 disabled:cursor-not-allowed"
+        >
+          {loading ? (
+            <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+          ) : (
+            'Sign up'
+          )}
+        </button>
+
+        <p className="text-center text-sm text-slate-400">
+          Already a member?{' '}
+          <Link
+            to="/login"
+            className="font-semibold text-green-400 hover:underline"
+          >
+            Log in
+          </Link>
+        </p>
+      </form>
     </div>
-  )
+  );
 }
-
-export default Signup

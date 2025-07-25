@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react'
 import { GlobalContext } from '../context/Context'
 import { FaUpload } from 'react-icons/fa';
 import { api } from '../Api';
-import { Toaster , toast } from 'sonner';
+import { Toaster, toast } from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 
 const EditProfile = () => {
@@ -33,7 +33,7 @@ const EditProfile = () => {
   const handleprofile = async () => {
     let {firstName , lastName , email , phoneNumber , Bio} = updatedProfile;  
     try {
-        let res = await api.put(`/api/v1/updateprofile/${state?.user?.user_id}`, {
+        let res = await api.put(`/api/v1/updateprofile/${state.user._id}`, {
           firstName,
           lastName,
           email,
