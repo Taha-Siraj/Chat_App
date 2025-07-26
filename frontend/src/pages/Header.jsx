@@ -47,7 +47,7 @@ const Header = () => {
       </header>
 
 
-        {IsopenProfile ? 
+    {IsopenProfile ? 
     <div className='font-poppins flex justify-between py-8 items-center flex-col text-white bg-[#1F2937] h-[300px] w-[230px] fixed right-16 top-[70px] border-[0.2px] rounded-xl border-[#dadada27]'>
       <div className='border-b pb-3 border-[#dadada4e] w-full flex flex-col justify-center items-center'>
         <img
