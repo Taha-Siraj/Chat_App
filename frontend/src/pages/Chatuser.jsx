@@ -91,7 +91,7 @@ const Chat = () => {
                 <FaBars />
               </button>
               <img
-                src={userdetails.profile}
+                src={userdetails.profile || 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSw3n-Kb2orGpTmaoHO7GOPX8_P-8-A6NO97Q&s'}
                 alt="avatar"
                 className="w-10 h-10 rounded-full object-cover"
               />
