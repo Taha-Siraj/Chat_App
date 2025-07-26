@@ -1,4 +1,3 @@
-// Alluser.jsx
 import React, { useEffect, useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../Api';
@@ -7,6 +6,7 @@ import { GlobalContext } from '../context/Context';
 const Alluser = () => {
   const [allUser, setAllUser] = useState([]);
   const { state } = useContext(GlobalContext);
+  const [SearchUser, setSearchUser] = useState('');
 
   const fetchalluser = async () => {
     try {
@@ -21,6 +21,14 @@ const Alluser = () => {
     fetchalluser();
   }, []);
 
+
+  const filteredUser = allUser.filter((u) =>{
+    const fullName = `${u.firstName}${u.lastName}`.toLowerCase();
+    return fullName.includes(SearchUser.toLowerCase())
+  })
+
+
+
   return (
     <div className="w-full md:w-[380px] h-screen bg-[#111b21] font-poppins flex flex-col">
 
@@ -31,13 +39,15 @@ const Alluser = () => {
       <div className="bg-[#202c33] px-4 pb-3">
         <input
           type="text"
+          value={SearchUser}
+          onChange={(e) =>  setSearchUser(e.target.value)}
           placeholder="Search or start new chat"
           className="w-full bg-[#2a3942] text-sm text-white rounded-md px-4 py-2 outline-none"
         />
       </div>
 
       <div className="flex-1 overflow-y-auto scrollbar-thin scrollbar-thumb-[#2a3942] scrollbar-track-transparent">
-        {allUser.map((u) => {
+        {filteredUser.map((u) => {
           const isMe = state.user.user_id === u._id;
           return (
             <Link

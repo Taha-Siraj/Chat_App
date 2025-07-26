@@ -1,4 +1,3 @@
-// Chat.jsx
 import React, { useContext, useRef, useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../context/Context';
