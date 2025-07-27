@@ -33,10 +33,10 @@ export default function Login() {
   };
 
   const inputClass =
-    'py-3 px-4 rounded-xl bg-slate-800 border border-slate-600 focus:border-green-500 focus:ring-2 focus:ring-green-500 outline-none transition w-full placeholder-slate-500';
+    'py-3 px-4 rounded-xl bg-slate-800 border border-slate-600 focus:border-green-500  focus:ring-2 focus:ring-green-500 outline-none transition w-full placeholder-slate-500';
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-black">
+    <div className="flex  min-h-screen items-center justify-center bg-black">
       <Toaster position="top-center" />
       <form
         onSubmit={handleSubmit}
