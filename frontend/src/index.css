@@ -1,33 +1,287 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+:root {
+  /* ==========================================================================
+     DARK THEME (OLED-refined Dark Panel System)
+     ========================================================================== */
+  --bg-app: #0b141a;          /* OLED deep black background */
+  --bg-panel: #111b21;        /* Deep charcoal sidebar/body panels */
+  --bg-header: #202c33;       /* Header background */
+  --bg-input: #2a3942;        /* Input background */
+  --bg-active: #2a3942;       /* Active selected items */
+  --bg-hover: #202c33;        /* Hover state items */
+  --bg-accent: #00a884;       /* WhatsApp green accent */
+  --bg-accent-hover: #00c59b; /* WhatsApp green hover */
+  
+  --text-primary: #e9edef;    /* Highly legible white text */
+  --text-secondary: #8696a0;  /* Muted soft gray text */
+  --text-white: #ffffff;      /* Pure white reference */
+  --text-accent: #00a884;     /* Accent color text */
+  --text-danger: #ea0038;     /* Error/hang-up red */
+  
+  --border-primary: #222d34;  /* Border color */
+  --border-secondary: #2f3b44;/* Subtle border highlight */
+  
+  --chat-wallpaper-color: #0b141a;
+  --chat-wallpaper-opacity: 0.06;
+  --chat-bubble-self: #005c4b;
+  --chat-bubble-other: #202c33;
+  
+  --shadow-premium: 0 4px 20px 0 rgba(0, 0, 0, 0.45);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.3);
+  
+  /* Font System */
+  --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: 'Poppins', sans-serif;
+}
+
+html.light {
+  /* ==========================================================================
+     LIGHT THEME (Clean White & Soft Gray System)
+     ========================================================================== */
+  --bg-app: #efeae2;          /* Classic WhatsApp beige-gray wallpaper background */
+  --bg-panel: #ffffff;        /* Pure white sidebar and list panels */
+  --bg-header: #f0f2f5;       /* Light cool gray headers */
+  --bg-input: #f0f2f5;        /* Light input background */
+  --bg-active: #eae6df;       /* Soft active select background */
+  --bg-hover: #f5f6f6;        /* Light hover background */
+  --bg-accent: #008069;       /* WCAG-compliant darker WhatsApp green */
+  --bg-accent-hover: #006653; /* Hover variant */
+  
+  --text-primary: #111b21;    /* Deep charcoal dark text */
+  --text-secondary: #667781;  /* Standard gray secondary text */
+  --text-white: #111b21;      /* Reverses for contrast */
+  --text-accent: #008069;     
+  --text-danger: #d91c29;
+  
+  --border-primary: #e9edef;  /* Light border */
+  --border-secondary: #e1e9eb;
+  
+  --chat-wallpaper-color: #efeae2;
+  --chat-wallpaper-opacity: 0.08;
+  --chat-bubble-self: #d9fdd3;
+  --chat-bubble-other: #ffffff;
+  
+  --shadow-premium: 0 4px 20px 0 rgba(0, 0, 0, 0.06);
+  --shadow-card: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+* {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
 }
 
-.custom-scrollbar::-webkit-scrollbar {
-    width: 8px;
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-primary) !important;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary) !important;
 }
 
-.custom-scrollbar::-webkit-scrollbar-track {
-    background: #2D3748; 
-    border-radius: 10px;
+body {
+  background-color: var(--bg-app) !important;
+  font-family: var(--font-primary);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
 
-#user-scroll::-webkit-scrollbar-thumb {
-    background: #0d2745; 
-    border-radius: 10px;
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
 }
 
-#user-scroll::-webkit-scrollbar-thumb:hover {
-    background: #357ABD; 
+/* ==========================================================================
+   MAPPING TAILWIND COLOR UTILITIES DIRECTLY TO THEME VARIABLES
+   ========================================================================== */
+.bg-\[\#09090b\] { background-color: var(--bg-app) !important; }
+.bg-\[\#0b141a\] { background-color: var(--bg-app) !important; }
+.bg-\[\#0b141a\]\/40 { background-color: var(--bg-input) !important; }
+.bg-\[\#111b21\] { background-color: var(--bg-panel) !important; }
+.bg-\[\#202c33\] { background-color: var(--bg-header) !important; }
+.bg-\[\#2a3942\] { background-color: var(--bg-input) !important; }
+.bg-\[\#1f2c34\] { background-color: var(--bg-header) !important; }
+.bg-\[\#222e35\] { background-color: var(--bg-panel) !important; }
+.bg-\[\#222e35\]\/30 { background-color: var(--bg-app) !important; }
+.bg-\[\#18181b\] { background-color: var(--bg-panel) !important; }
+
+/* Tailwind zinc/gray background variables mapped */
+.bg-zinc-950 { background-color: var(--bg-app) !important; }
+.bg-zinc-900 { background-color: var(--bg-hover) !important; }
+.bg-zinc-800 { background-color: var(--bg-active) !important; }
+.bg-zinc-700 { background-color: var(--border-primary) !important; }
+
+/* Dynamic Message Bubbles */
+.bg-\[\#005c4b\] {
+  background-color: var(--chat-bubble-self) !important;
+  color: var(--text-primary) !important;
+}
+.bg-\[\#202c33\] {
+  background-color: var(--chat-bubble-other) !important;
+  color: var(--text-primary) !important;
 }
 
+/* Accent Buttons & Backgrounds */
+.bg-\[\#00a884\] {
+  background-color: var(--bg-accent) !important;
+  color: var(--text-white) !important; /* Button text needs contrast */
+}
+.bg-\[\#00a884\]:hover {
+  background-color: var(--bg-accent-hover) !important;
+}
 
-#user-scroll {
-    scrollbar-width: thin; 
-    scrollbar-color: #5e83ae #2D3748; 
+/* Text Overrides */
+.text-\[\#e9edef\] { color: var(--text-primary) !important; }
+.text-\[\#aebac1\] { color: var(--text-secondary) !important; }
+.text-\[\#8696a0\] { color: var(--text-secondary) !important; }
+.text-white { color: var(--text-primary) !important; }
+.text-zinc-100 { color: var(--text-primary) !important; }
+.text-zinc-200 { color: var(--text-primary) !important; }
+.text-zinc-300 { color: var(--text-secondary) !important; }
+.text-zinc-400 { color: var(--text-secondary) !important; }
+.text-zinc-450 { color: var(--text-secondary) !important; }
+.text-zinc-550 { color: var(--text-secondary) !important; }
+.text-\[\#00a884\] { color: var(--text-accent) !important; }
+
+/* Border Overrides */
+.border-\[\#222d34\] { border-color: var(--border-primary) !important; }
+.border-\[\#222d34\]\/60 { border-color: var(--border-primary) !important; }
+.border-\[\#222d34\]\/30 { border-color: var(--border-primary) !important; }
+.border-zinc-800 { border-color: var(--border-primary) !important; }
+.border-zinc-850 { border-color: var(--border-primary) !important; }
+.border-zinc-700 { border-color: var(--border-secondary) !important; }
+
+/* ==========================================================================
+   WHATSAPP PREMIUM CUSTOM COMPONENTS & ANIMATIONS
+   ========================================================================== */
+.whatsapp-wallpaper {
+  background-color: var(--chat-wallpaper-color) !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%238696a0' fill-opacity='0.035'%3E%3Cpath fill-rule='evenodd' d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm1-61c3.16 0 5.75-2.59 5.75-5.75S38.16 17.5 35 17.5 29.25 20.09 29.25 23.25 31.84 29 35 29zM19 76c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm52-47c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zM24 45c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm52-17c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM58 80c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM6 82c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm60 7c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4z'/%3E%3C/g%3E%3C/svg%3E") !important;
+}
+
+/* Bubble Tails */
+.bubble-tail-sender {
+  position: relative;
+}
+.bubble-tail-sender::after {
+  content: "";
+  position: absolute;
+  right: -6px;
+  top: 0;
+  width: 6px;
+  height: 10px;
+  background-color: var(--chat-bubble-self);
+  clip-path: polygon(0 0, 0 100%, 100% 0);
+}
+
+.bubble-tail-receiver {
+  position: relative;
+}
+.bubble-tail-receiver::before {
+  content: "";
+  position: absolute;
+  left: -6px;
+  top: 0;
+  width: 6px;
+  height: 10px;
+  background-color: var(--chat-bubble-other);
+  clip-path: polygon(100% 0, 100% 100%, 0 0);
+}
+
+/* Call HUD Glassmorphism */
+.call-overlay {
+  background: rgba(11, 20, 26, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+}
+
+.call-pulse {
+  animation: call-pulse-ani 2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+}
+
+@keyframes call-pulse-ani {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(0, 168, 132, 0.4);
+  }
+  50% {
+    transform: scale(1.08);
+    box-shadow: 0 0 0 20px rgba(0, 168, 132, 0);
+  }
+}
+
+/* Status Story Indicators */
+.status-ring {
+  padding: 2.5px;
+  border: 2px solid var(--text-accent);
+  border-radius: 50%;
+  animation: spin-ring 15s linear infinite;
+}
+
+@keyframes spin-ring {
+  100% { transform: rotate(360deg); }
+}
+
+.story-progress-bg {
+  background: rgba(255, 255, 255, 0.25);
+  height: 3px;
+  border-radius: 2px;
+  flex: 1;
+}
+
+.story-progress-bar {
+  background: var(--text-primary);
+  height: 100%;
+  border-radius: 2px;
+  width: 0;
+}
+
+/* Drawer Slides */
+.drawer-slide-in {
+  animation: slide-in-panel 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes slide-in-panel {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+
+/* Emoji Reactions Popup */
+.reaction-bar {
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+}
+
+.message-bubble-container:hover .reaction-bar {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+/* Standard accessibility focus outlines */
+input:focus, button:focus-visible {
+  outline: 2px solid var(--text-accent);
+  outline-offset: 2px;
+}
+
+/* Add page-wide smooth transition to all backgrounds and text colors */
+body, header, main, footer, input, button, a, div, span, img, section {
+  transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              border-color 0.4s cubic-bezier(0.4, 0, 0.2, 1), 
+              box-shadow 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }

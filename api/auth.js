@@ -71,11 +71,21 @@ router.post('/login', async(req, res) => {
 
     res.cookie('token', token,{
         httpOnly: true,
-        secure: true,
+        secure: false,
         maxAge: 24 * 60 * 60 * 1000,
     })
-    const { password: _p, ...userWithoutPassword } = user._doc
-    res.status(200).send({message: "User SucessFully Login", user: userWithoutPassword});
+    res.status(200).send({
+      message: "User SucessFully Login",
+      user: {
+        user_id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        profile: user.profile,
+        phoneNumber: user.phoneNumber,
+        bio: user.Bio,
+      }
+    });
     } catch (error) {
     res.status(500).send({message: "internel server error"})
     console.log(error)
@@ -88,7 +98,7 @@ router.post('/logout', (req , res) => {
     res.clearCookie('token',{
         maxAge: 1,
         httpOnly: true,
-        secure: true,
+        secure: false,
     })
     res.status(200).send({msg: "User Logout"});
 });

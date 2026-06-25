@@ -13,9 +13,18 @@ const storage = new CloudinaryStorage({
     cloudinary: cloudinary,
     params:{
       folder: "profile",
-      llowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg',]
+      allowed_formats: ['jpg', 'jpeg', 'png', 'webp', 'gif', 'svg']
     }
 });
 
+const attachmentStorage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+      folder: "chat_attachments",
+      resource_type: "auto" // Allows raw documents, audio voice notes, videos, etc.
+    }
+});
 
 export const upload = multer({ storage })
+export const uploadAttachment = multer({ storage: attachmentStorage })
+
